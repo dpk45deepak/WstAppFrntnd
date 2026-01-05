@@ -1,0 +1,42 @@
+{
+  "short_name": "WstApp",
+  "name": "Waste Management App",
+  "description": "Connect with drivers for efficient waste pickup and disposal",
+  "icons": [
+    {
+      "src": "/logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Schedule Pickup",
+      "short_name": "Schedule",
+      "description": "Schedule a new waste pickup",
+      "url": "/schedule-pickup",
+      "icons": [{ "src": "/icon-schedule.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Pickups",
+      "short_name": "Pickups",
+      "description": "View your scheduled pickups",
+      "url": "/pickups",
+      "icons": [{ "src": "/icon-pickups.png", "sizes": "192x192" }]
+    }
+  ]
+}
