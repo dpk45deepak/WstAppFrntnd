@@ -9,7 +9,7 @@ import { useToast } from '../../hooks/useToast';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import Card from '../../components/common/Card';
-import api from '../../services/api';
+// import api from '../../services/api';
 
 const resetPasswordSchema = z.object({
   password: z
@@ -33,7 +33,7 @@ const ResetPasswordPage: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
-  const [passwordReset, setPasswordReset] = useState(false);
+  const [passwordReset] = useState(false);
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ const ResetPasswordPage: React.FC = () => {
     validateToken();
   }, [token, showToast]);
 
-  const onSubmit = async (data: ResetPasswordFormData) => {
+  const onSubmit = async () => {
     if (!token) return;
 
     setLoading(true);
@@ -107,7 +107,7 @@ const ResetPasswordPage: React.FC = () => {
   // Show loading while validating token
   if (isValidToken === null) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-linear-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
         <Card className="w-full max-w-md text-center" padding="lg">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Validating reset link...</p>
@@ -122,7 +122,7 @@ const ResetPasswordPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md" padding="lg">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
@@ -157,7 +157,7 @@ const ResetPasswordPage: React.FC = () => {
           <div className="space-y-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="flex">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
                 <p className="text-sm text-green-800">
                   Your password has been updated successfully. You can now log in with your new password.
                 </p>
@@ -227,41 +227,41 @@ const ResetPasswordPage: React.FC = () => {
               <ul className="space-y-1 text-sm text-gray-600">
                 <li className={`flex items-center ${password?.length >= 8 ? 'text-green-600' : ''}`}>
                   {password?.length >= 8 ? (
-                    <CheckCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <CheckCircle className="w-3 h-3 mr-2 shrink-0" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <AlertCircle className="w-3 h-3 mr-2 shrink-0" />
                   )}
                   At least 8 characters
                 </li>
                 <li className={`flex items-center ${/[A-Z]/.test(password || '') ? 'text-green-600' : ''}`}>
                   {/[A-Z]/.test(password || '') ? (
-                    <CheckCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <CheckCircle className="w-3 h-3 mr-2 shrink-0" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <AlertCircle className="w-3 h-3 mr-2 shrink-0" />
                   )}
                   One uppercase letter
                 </li>
                 <li className={`flex items-center ${/[a-z]/.test(password || '') ? 'text-green-600' : ''}`}>
                   {/[a-z]/.test(password || '') ? (
-                    <CheckCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <CheckCircle className="w-3 h-3 mr-2 shrink-0" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <AlertCircle className="w-3 h-3 mr-2 shrink-0" />
                   )}
                   One lowercase letter
                 </li>
                 <li className={`flex items-center ${/[0-9]/.test(password || '') ? 'text-green-600' : ''}`}>
                   {/[0-9]/.test(password || '') ? (
-                    <CheckCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <CheckCircle className="w-3 h-3 mr-2 shrink-0" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <AlertCircle className="w-3 h-3 mr-2 shrink-0" />
                   )}
                   One number
                 </li>
                 <li className={`flex items-center ${/[^A-Za-z0-9]/.test(password || '') ? 'text-green-600' : ''}`}>
                   {/[^A-Za-z0-9]/.test(password || '') ? (
-                    <CheckCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <CheckCircle className="w-3 h-3 mr-2 shrink-0" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 mr-2 flex-shrink-0" />
+                    <AlertCircle className="w-3 h-3 mr-2 shrink-0" />
                   )}
                   One special character
                 </li>

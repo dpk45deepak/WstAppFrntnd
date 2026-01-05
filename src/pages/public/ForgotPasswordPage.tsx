@@ -29,7 +29,7 @@ const ForgotPasswordPage: React.FC = () => {
 
   const email = watch('email');
 
-  const onSubmit = async (data: ForgotPasswordFormData) => {
+  const onSubmit = async () => {
     setLoading(true);
     try {
       // Password reset not implemented in backend. Inform user.
