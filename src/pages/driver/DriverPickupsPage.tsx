@@ -50,7 +50,7 @@ const DriverPickupsPage: React.FC = () => {
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const itemsPerPage = 10;
+    // const itemsPerPage = 10;
 
     useEffect(() => {
         fetchDriverPickups();
@@ -66,7 +66,7 @@ const DriverPickupsPage: React.FC = () => {
         setLoading(true);
         try {
             if (!user) throw new Error('Not authenticated');
-            const response = await pickupService.getDriverPickups(user.id);
+            const response: any = await pickupService.getDriverPickups(user.id);
             // backend returns { success: true, data: pickups }
             setPickups(response.data || []);
             setTotalPages(1);

@@ -321,13 +321,13 @@ export const usePickup = (): UsePickupReturn => {
 
   const searchPickups = useCallback((query: string): Pickup[] => {
     if (!query.trim()) return pickups;
-    
+
     const searchTerm = query.toLowerCase();
-    return pickups.filter(pickup => 
-      pickup.address.toLowerCase().includes(searchTerm) ||
+    return pickups.filter(pickup =>
+      pickup.address!.toLowerCase().includes(searchTerm) ||
       pickup.wasteType.toLowerCase().includes(searchTerm) ||
       (pickup.notes && pickup.notes.toLowerCase().includes(searchTerm)) ||
-      pickup.id.toLowerCase().includes(searchTerm) ||
+      pickup.id!.toLowerCase().includes(searchTerm) ||
       (pickup.userName && pickup.userName.toLowerCase().includes(searchTerm)) ||
       (pickup.driverName && pickup.driverName.toLowerCase().includes(searchTerm))
     );

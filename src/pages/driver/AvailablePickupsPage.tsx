@@ -54,7 +54,7 @@ const AvailablePickupsPage: React.FC = () => {
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 8;
+  // const itemsPerPage = 8;
 
   useEffect(() => {
     fetchAvailablePickups();
@@ -70,7 +70,7 @@ const AvailablePickupsPage: React.FC = () => {
     setLoading(true);
     try {
       // Fetch pickups with status 'pending' to represent available pickups
-      const response = await pickupService.getAllPickups({ status: 'pending' });
+      const response: any  = await pickupService.getAllPickups({ status: 'pending' });
       // backend returns { success: true, data: pickups }
       setPickups(response.data || []);
       setTotalPages(1);

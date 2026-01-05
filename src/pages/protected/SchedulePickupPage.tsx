@@ -10,6 +10,7 @@ import Input from '../../components/common/Input';
 import Card from '../../components/common/Card';
 import { Calendar, MapPin, Package, MessageSquare } from 'lucide-react';
 
+
 const scheduleSchema = z.object({
   pickupDate: z.string().min(1, 'Pickup date is required'),
   pickupTime: z.string().min(1, 'Pickup time is required'),
@@ -38,8 +39,9 @@ const SchedulePickupPage = () => {
       
       await schedulePickup({
         pickupDate: pickupDateTime.toISOString(),
-        address: data.address,
+        pickupAddress: data.address,
         wasteType: data.wasteType,
+        // quantity: 1, // Default quantity
         notes: data.notes,
       });
       

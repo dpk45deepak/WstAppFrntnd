@@ -45,7 +45,7 @@ const PickupList = ({ userId, role = 'user' }: { userId?: string; role?: string 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(p =>
-        p.address.toLowerCase().includes(query) ||
+        p.address!.toLowerCase().includes(query) ||
         p.wasteType.toLowerCase().includes(query) ||
         p.notes?.toLowerCase().includes(query)
       );

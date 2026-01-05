@@ -80,7 +80,7 @@ const DriverProfilePage: React.FC = () => {
   const fetchDriverProfile = async () => {
     setLoading(true);
     try {
-      const profileData = await authService.getProfile();
+      const profileData: any = await authService.getProfile();
 
       // Set form values with available fields (backend user model is minimal)
       reset({

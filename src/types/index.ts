@@ -47,8 +47,8 @@ export interface Pickup {
 export interface CreatePickupData {
   pickupDate: string;
   wasteType: 'general' | 'recyclable' | 'hazardous' | 'organic';
-  quantity: string | number;
-  pickupAddress: string;
+  quantity?: string | number;
+  pickupAddress?: string;
   images?: string[];
   specialInstructions?: string;
   notes?: string;

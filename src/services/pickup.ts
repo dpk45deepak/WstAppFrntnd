@@ -132,6 +132,20 @@ const pickupService = {
     const response: { price: number; currency: string; estimatedTime: number } = await api.post('/pickups/estimate', data);
     return response;
   },
+  async ratePickup(id: string, rating: number, feedback?: string): Promise<Pickup> {
+    const { data } = await api.post(`/pickups/${id}/rate`, { rating, feedback });
+    return data;
+  },
+  async uploadPickupPhoto(id: string, photo: File): Promise<{ photoUrl: string }> {
+    const formData = new FormData();
+    formData.append('photo', photo);
+    const { data } = await api.post(`/pickups/${id}/photo`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return data;
+  },
 };
 
 export default pickupService;

@@ -295,7 +295,7 @@ const EarningsPage: React.FC = () => {
               Filter
             </Button>
           </div>
-          
+
           <div className="space-y-4">
             {earningsData?.earningsByType && earningsData.earningsByType.length > 0 ? (
               earningsData.earningsByType.map((type, index) => {

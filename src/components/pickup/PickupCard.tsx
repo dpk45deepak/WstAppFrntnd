@@ -10,12 +10,13 @@ interface PickupCardProps {
 }
 
 const PickupCard = ({ pickup, showActions = false, onAction }: PickupCardProps) => {
-  const statusColors = {
-    scheduled: 'bg-yellow-100 text-yellow-800',
-    in_progress: 'bg-blue-100 text-blue-800',
-    completed: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
-  };
+
+  // const statusColors = {
+  //   scheduled: 'bg-yellow-100 text-yellow-800',
+  //   in_progress: 'bg-blue-100 text-blue-800',
+  //   completed: 'bg-green-100 text-green-800',
+  //   cancelled: 'bg-red-100 text-red-800',
+  // };
 
   const wasteTypeIcons = {
     general: '🗑️',
@@ -33,7 +34,7 @@ const PickupCard = ({ pickup, showActions = false, onAction }: PickupCardProps) 
               <span className="text-2xl">{wasteTypeIcons[pickup.wasteType]}</span>
               <span className="font-medium capitalize">{pickup.wasteType} Waste</span>
             </div>
-            <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[pickup.status]}`}>
+            <span className={`px-3 py-1 rounded-full text-xs font-medium $`}>
               {pickup.status.replace('_', ' ')}
             </span>
           </div>
@@ -78,19 +79,19 @@ const PickupCard = ({ pickup, showActions = false, onAction }: PickupCardProps) 
         </div>
 
         {showActions && onAction && (
-          <div className="flex flex-col gap-2 min-w-[120px]">
+          <div className="flex flex-col gap-2 min-w-30">
             {pickup.status === 'scheduled' && (
               <>
-                <Button size="sm" onClick={() => onAction('start', pickup.id)}>
+                <Button size="sm" onClick={() => onAction('start', pickup.id as string)}>
                   Start Pickup
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => onAction('cancel', pickup.id)}>
+                <Button variant="outline" size="sm" onClick={() => onAction('cancel', pickup.id as string)}>
                   Cancel
                 </Button>
               </>
             )}
             {pickup.status === 'in_progress' && (
-              <Button size="sm" onClick={() => onAction('complete', pickup.id)}>
+              <Button size="sm" onClick={() => onAction('complete', pickup.id as string)}>
                 Mark Complete
               </Button>
             )}

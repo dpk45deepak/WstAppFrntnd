@@ -70,8 +70,8 @@ const DriverDashboardPage: React.FC = () => {
         try {
             if (!user) throw new Error('Not authenticated');
             // Use pickupService to fetch stats and driver pickups
-            const statsResponse = await pickupService.getPickupStats(user.id);
-            const driverPickupsResponse = await pickupService.getDriverPickups(user.id);
+            const statsResponse: any = await pickupService.getPickupStats(user.id);
+            const driverPickupsResponse: any = await pickupService.getDriverPickups(user.id);
 
             const statsData = statsResponse.data || {};
             setStats({
