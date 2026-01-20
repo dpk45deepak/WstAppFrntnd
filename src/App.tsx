@@ -41,10 +41,6 @@ const DriversManagementPage = lazy(() => import('./pages/admin/DriversManagement
 const ReportsPage = lazy(() => import('./pages/admin/ReportPage'));
 
 
-// Backend
-// import { wakeUpBackend } from './lib/wakeUp';
-
-
 // import the css for app file
 import "./App.css";
 
@@ -59,17 +55,8 @@ const PageLoader = () => (
 const AppRoutes = () => {
   const { user, isLoading } = useAuth();
   // const { showToast } = useToast();
-
   // Log user info for debugging
-  console.log('User in AppRoutes:', user);
-
-  // useEffect(() => {
-  //   wakeUpBackend();
-
-  //   const interval = setInterval(wakeUpBackend, 30_000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
+  // console.log('User in AppRoutes:', user);
   if (isLoading) {
     return <PageLoader />;
   }
@@ -137,7 +124,7 @@ const AppInitializer = () => {
     if (import.meta.env.REACT_APP_GA_MEASUREMENT_ID) {
       import('./utils/analytics').then(({ initAnalytics, trackPageView }) => {
         initAnalytics();
-        
+
         // Track page views
         const path = window.location.pathname + window.location.search;
         trackPageView(path);
