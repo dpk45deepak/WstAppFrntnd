@@ -5,7 +5,6 @@ import {
   TrendingUp,
   Calendar,
   Download,
-  Filter,
   Package,
   CreditCard,
   BarChart3,
@@ -17,16 +16,12 @@ import {
   Target,
   Zap,
   Trophy,
-  TrendingDown,
   RefreshCw,
   CheckCircle,
-  Clock,
   Percent,
   PieChart,
   LineChart,
   Shield,
-  Award,
-  Users,
   Leaf,
   Eye,
 } from "lucide-react";
@@ -34,7 +29,6 @@ import { useToast } from "../../hooks/useToast";
 import api from "../../services/api";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { Line, Pie, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -201,7 +195,7 @@ const EarningsPage: React.FC = () => {
 
     const types = earningsData.earningsByType.map((t) => t.type);
     const earnings = earningsData.earningsByType.map((t) => t.earnings);
-    const counts = earningsData.earningsByType.map((t) => t.count);
+    // const counts = earningsData.earningsByType.map((t) => t.count);
 
     return {
       labels: types.map((t) => t.charAt(0).toUpperCase() + t.slice(1)),

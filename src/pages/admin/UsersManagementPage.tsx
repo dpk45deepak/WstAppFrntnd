@@ -15,15 +15,10 @@ import {
   TrendingUp,
   Users,
   UserCheck,
-  UserX,
   Download,
   RefreshCw,
-  MoreVertical,
   Sparkles,
   BarChart3,
-  AlertCircle,
-  ChevronRight,
-  Zap,
   Eye,
   Lock,
   Unlock,
@@ -34,7 +29,6 @@ import api from "../../services/api";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
 import Pagination from "../../components/common/Pagination";
 
 interface User {
@@ -227,17 +221,17 @@ const UsersManagementPage: React.FC = () => {
   const getStatusBadge = (status: User["status"]) => {
     const statusConfig = {
       active: {
-        color: "bg-gradient-to-r from-teal-500 to-teal-600 text-white",
+        color: "bg-linear-to-r from-teal-500 to-teal-600 text-white",
         icon: <CheckCircle className="w-3 h-3" />,
         glow: "shadow-lg shadow-teal-500/30",
       },
       inactive: {
-        color: "bg-gradient-to-r from-gray-400 to-gray-500 text-white",
+        color: "bg-linear-to-r from-gray-400 to-gray-500 text-white",
         icon: null,
         glow: "",
       },
       suspended: {
-        color: "bg-gradient-to-r from-rose-500 to-rose-600 text-white",
+        color: "bg-linear-to-r from-rose-500 to-rose-600 text-white",
         icon: <XCircle className="w-3 h-3" />,
         glow: "shadow-lg shadow-rose-500/30",
       },
@@ -258,17 +252,17 @@ const UsersManagementPage: React.FC = () => {
   const getRoleBadge = (role: User["role"]) => {
     const roleConfig = {
       user: {
-        color: "bg-gradient-to-r from-blue-500 to-blue-600 text-white",
+        color: "bg-linear-to-r from-blue-500 to-blue-600 text-white",
         icon: <Users className="w-3 h-3" />,
         glow: "shadow-lg shadow-blue-500/30",
       },
       driver: {
-        color: "bg-gradient-to-r from-indigo-500 to-indigo-600 text-white",
+        color: "bg-linear-to-r from-indigo-500 to-indigo-600 text-white",
         icon: <Shield className="w-3 h-3" />,
         glow: "shadow-lg shadow-indigo-500/30",
       },
       admin: {
-        color: "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white",
+        color: "bg-linear-to-r from-yellow-500 to-yellow-600 text-white",
         icon: <Shield className="w-3 h-3" />,
         glow: "shadow-lg shadow-yellow-500/30",
       },
@@ -284,23 +278,23 @@ const UsersManagementPage: React.FC = () => {
     );
   };
 
-  const getUserInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((word) => word[0])
-      .join("")
-      .toUpperCase();
-  };
+  // const getUserInitials = (name: string) => {
+  //   return name
+  //     .split(" ")
+  //     .map((word) => word[0])
+  //     .join("")
+  //     .toUpperCase();
+  // };
 
   if (loading && users.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
         <div className="relative">
-          <div className="w-20 h-20 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full animate-spin-slow"></div>
+          <div className="w-20 h-20 bg-linear-to-r from-teal-500 to-blue-500 rounded-full animate-spin-slow"></div>
           <UserPlus className="absolute inset-0 m-auto w-10 h-10 text-white animate-bounce-slow" />
         </div>
         <div className="text-center">
-          <h3 className="text-xl font-semibold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+          <h3 className="text-xl font-semibold bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
             Loading Users
           </h3>
           <p className="text-gray-500 mt-2">Fetching user information...</p>
@@ -312,17 +306,17 @@ const UsersManagementPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Header with Animated Background */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-teal-50 to-blue-50 p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-teal-50 to-blue-50 p-8 shadow-xl">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative z-10">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-gradient-to-r from-teal-500 to-blue-500 rounded-2xl shadow-lg">
+                <div className="p-3 bg-linear-to-r from-teal-500 to-blue-500 rounded-2xl shadow-lg">
                   <Users className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
                     Users Management
                   </h1>
                   <p className="text-gray-600">
@@ -333,8 +327,8 @@ const UsersManagementPage: React.FC = () => {
             </div>
             <div className="flex flex-wrap gap-3">
               <Button
-                // variant="gradient"
-                // gradient="teal-blue"
+                // variant="linear"
+                // linear="teal-blue"
                 onClick={() => (window.location.href = "/admin/users/add")}
                 className="group relative overflow-hidden"
               >
@@ -397,7 +391,7 @@ const UsersManagementPage: React.FC = () => {
           >
             <div className="relative">
               <div
-                className={`absolute -right-4 -top-4 w-20 h-20 rounded-full bg-gradient-to-br ${stat.color} opacity-10 group-hover:scale-125 transition-transform duration-500`}
+                className={`absolute -right-4 -top-4 w-20 h-20 rounded-full bg-linear-to-br ${stat.color} opacity-10 group-hover:scale-125 transition-transform duration-500`}
               ></div>
               <div className="flex items-center justify-between">
                 <div>
@@ -422,7 +416,7 @@ const UsersManagementPage: React.FC = () => {
                   <p className="text-xs text-gray-500 mt-1">{stat.metric}</p>
                 </div>
                 <div
-                  className={`p-3 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-lg group-hover:rotate-12 transition-transform duration-500`}
+                  className={`p-3 rounded-2xl bg-linear-to-br ${stat.color} text-white shadow-lg group-hover:rotate-12 transition-transform duration-500`}
                 >
                   {stat.icon}
                 </div>
@@ -462,7 +456,7 @@ const UsersManagementPage: React.FC = () => {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`relative px-4 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 ${
                     activeTab === tab.id
-                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg shadow-teal-500/30"
+                      ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg shadow-teal-500/30"
                       : "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-gray-200"
                   }`}
                 >
@@ -568,7 +562,7 @@ const UsersManagementPage: React.FC = () => {
         <Card className="border-2 border-teal-500 shadow-lg">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+              <div className="w-10 h-10 bg-linear-to-r from-teal-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
                 <UserCheck className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -602,8 +596,8 @@ const UsersManagementPage: React.FC = () => {
               </Button>
               <Button
                 size="sm"
-                // variant="gradient"
-                // gradient="rose-rose"
+                // variant="linear"
+                // linear="rose-rose"
                 onClick={() => handleBulkAction("delete")}
                 className="group relative overflow-hidden"
               >
@@ -663,7 +657,7 @@ const UsersManagementPage: React.FC = () => {
                     </div>
                   </div>
                   {(user.totalSpent || 0) > 1000 && (
-                    <div className="px-3 py-1 bg-gradient-to-r from-yellow-500 to-amber-500 text-white text-xs font-medium rounded-full">
+                    <div className="px-3 py-1 bg-linear-to-r from-yellow-500 to-amber-500 text-white text-xs font-medium rounded-full">
                       <Sparkles className="w-3 h-3 inline mr-1" />
                       Premium
                     </div>
@@ -761,8 +755,8 @@ const UsersManagementPage: React.FC = () => {
                           {user.status === "suspended" ? (
                             <Button
                               size="sm"
-                              // variant="gradient"
-                              // gradient="teal-blue"
+                              // variant="linear"
+                              // linear="teal-blue"
                               onClick={() =>
                                 handleUserAction("activate", user.id)
                               }
@@ -803,14 +797,14 @@ const UsersManagementPage: React.FC = () => {
                 </div>
 
                 {/* Hover Effect Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               </Card>
             ))
           ) : (
             <div className="col-span-full">
               <Card className="text-center py-16">
                 <div className="w-24 h-24 mx-auto mb-6 relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full opacity-10 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-linear-to-r from-teal-500 to-blue-500 rounded-full opacity-10 animate-pulse"></div>
                   <Users className="relative w-12 h-12 mx-auto text-gray-300" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -822,8 +816,8 @@ const UsersManagementPage: React.FC = () => {
                     : "Start by adding your first user to the platform."}
                 </p>
                 <Button
-                  // variant="gradient"
-                  // gradient="teal-blue"
+                  // variant="linear"
+                  // linear="teal-blue"
                   onClick={() => (window.location.href = "/admin/users/add")}
                   className="group"
                 >
@@ -947,8 +941,8 @@ const UsersManagementPage: React.FC = () => {
                             {user.status === "suspended" ? (
                               <Button
                                 size="sm"
-                                // variant="gradient"
-                                // gradient="teal-blue"
+                                // variant="linear"
+                                // linear="teal-blue"
                                 onClick={() =>
                                   handleUserAction("activate", user.id)
                                 }
@@ -994,7 +988,7 @@ const UsersManagementPage: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
           <Card className="w-full max-w-md transform scale-100 animate-scaleIn">
             <div className="text-center">
-              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-rose-500 to-rose-600 mb-4">
+              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-linear-to-r from-rose-500 to-rose-600 mb-4">
                 <Trash2 className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -1020,8 +1014,8 @@ const UsersManagementPage: React.FC = () => {
                   Cancel
                 </Button>
                 <Button
-                  // variant="gradient"
-                  // gradient="rose-rose"
+                  // variant="linear"
+                  // linear="rose-rose"
                   onClick={() => {
                     handleUserAction("delete", userToAction.id);
                     setShowDeleteModal(false);
@@ -1042,7 +1036,7 @@ const UsersManagementPage: React.FC = () => {
       {/* Floating Action Button */}
       <button
         onClick={() => (window.location.href = "/admin/users/add")}
-        className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 animate-bounce-slow z-50 group"
+        className="fixed bottom-8 right-8 w-14 h-14 bg-linear-to-r from-teal-500 to-blue-500 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 animate-bounce-slow z-50 group"
       >
         <UserPlus className="w-6 h-6 group-hover:rotate-90 transition-transform duration-500" />
         <div className="absolute -inset-4 bg-teal-500/20 rounded-full animate-ping opacity-0 group-hover:opacity-100"></div>

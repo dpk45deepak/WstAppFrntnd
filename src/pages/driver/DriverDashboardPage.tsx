@@ -11,7 +11,6 @@ import {
   AlertCircle,
   Calendar,
   Navigation,
-  Battery,
   Shield,
   Sparkles,
   Zap,
@@ -25,7 +24,6 @@ import {
   BatteryCharging,
   Navigation2,
   RotateCw,
-  Star,
   BarChart3,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
@@ -75,7 +73,7 @@ const DriverDashboardPage: React.FC = () => {
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [batteryLevel, setBatteryLevel] = useState(85);
   const [isOnline, setIsOnline] = useState(true);
-  const [performanceStreak, setPerformanceStreak] = useState(5);
+  const [performanceStreak, _] = useState(5);
 
   useEffect(() => {
     fetchDashboardData();
@@ -218,7 +216,7 @@ const DriverDashboardPage: React.FC = () => {
       value: animatedStats.completedToday,
       icon: <Package className="w-6 h-6" />,
       color: "from-blue-500 to-teal-400",
-      bgColor: "bg-gradient-to-br from-blue-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-blue-50 via-white to-white",
       borderColor: "border-blue-200",
       change: "+2 from yesterday",
       trend: "up" as const,
@@ -230,7 +228,7 @@ const DriverDashboardPage: React.FC = () => {
       value: animatedStats.pendingPickups,
       icon: <Clock className="w-6 h-6" />,
       color: "from-rose-500 to-indigo-400",
-      bgColor: "bg-gradient-to-br from-rose-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-rose-50 via-white to-white",
       borderColor: "border-rose-200",
       subValue: `${activePickup ? "1 active" : "None"}`,
       delay: 0.2,
@@ -241,7 +239,7 @@ const DriverDashboardPage: React.FC = () => {
       value: `$${animatedStats.todayEarnings.toFixed(2)}`,
       icon: <DollarSign className="w-6 h-6" />,
       color: "from-green-500 to-teal-400",
-      bgColor: "bg-gradient-to-br from-green-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-green-50 via-white to-white",
       borderColor: "border-green-200",
       change: `$${(stats?.totalEarnings || 0).toFixed(2)} total`,
       delay: 0.3,
@@ -252,7 +250,7 @@ const DriverDashboardPage: React.FC = () => {
       value: animatedStats.rating.toFixed(1),
       icon: <TrendingUp className="w-6 h-6" />,
       color: "from-indigo-500 to-blue-400",
-      bgColor: "bg-gradient-to-br from-indigo-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-indigo-50 via-white to-white",
       borderColor: "border-indigo-200",
       subValue: `${stats?.totalPickups || 0} trips`,
       delay: 0.4,
@@ -325,19 +323,6 @@ const DriverDashboardPage: React.FC = () => {
     },
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -390,7 +375,7 @@ const DriverDashboardPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleToggleOnline}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold ${isOnline ? "bg-gradient-to-r from-green-500 to-teal-500 text-white" : "bg-gray-100 text-gray-700"}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold ${isOnline ? "bg-linear-to-r from-green-500 to-teal-500 text-white" : "bg-gray-100 text-gray-700"}`}
             >
               <div
                 className={`w-2 h-2 rounded-full ${isOnline ? "bg-white" : "bg-gray-500"}`}
@@ -398,7 +383,7 @@ const DriverDashboardPage: React.FC = () => {
               {isOnline ? "Online" : "Offline"}
             </motion.button>
 
-            <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl">
+            <div className="flex items-center gap-2 px-3 py-2 bg-linear-to-r from-blue-50 to-teal-50 rounded-xl">
               <BatteryCharging
                 className={`w-5 h-5 ${batteryLevel > 30 ? "text-green-500" : "text-rose-500"}`}
               />
@@ -406,7 +391,7 @@ const DriverDashboardPage: React.FC = () => {
             </div>
 
             <div
-              className={`flex items-center gap-2 px-3 py-2 rounded-xl ${locationEnabled ? "bg-gradient-to-r from-teal-50 to-blue-50" : "bg-gradient-to-r from-rose-50 to-rose-100"}`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-xl ${locationEnabled ? "bg-linear-to-r from-teal-50 to-blue-50" : "bg-linear-to-r from-rose-50 to-rose-100"}`}
             >
               <Navigation2
                 className={`w-5 h-5 ${locationEnabled ? "text-blue-500" : "text-rose-500"}`}
@@ -455,7 +440,7 @@ const DriverDashboardPage: React.FC = () => {
               <div className="relative z-10">
                 <div className="flex items-start justify-between mb-6">
                   <div
-                    className={`p-3 rounded-xl bg-gradient-to-br ${stat.color} shadow-md`}
+                    className={`p-3 rounded-xl bg-linear-to-br ${stat.color} shadow-md`}
                   >
                     {stat.icon}
                   </div>
@@ -510,7 +495,7 @@ const DriverDashboardPage: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 via-white to-teal-50/30">
+            <Card className="border-2 border-blue-200 bg-linear-to-r from-blue-50 via-white to-teal-50/30">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-6">
@@ -520,7 +505,7 @@ const DriverDashboardPage: React.FC = () => {
                         rotate: [0, 5, 0],
                       }}
                       transition={{ repeat: Infinity, duration: 2 }}
-                      className="w-14 h-14 bg-gradient-to-br from-blue-500 to-teal-400 rounded-xl flex items-center justify-center shadow-lg"
+                      className="w-14 h-14 bg-linear-to-br from-blue-500 to-teal-400 rounded-xl flex items-center justify-center shadow-lg"
                     >
                       <Package className="w-7 h-7 text-white" />
                     </motion.div>
@@ -529,7 +514,7 @@ const DriverDashboardPage: React.FC = () => {
                         <h3 className="text-xl font-bold text-gray-900">
                           Active Pickup
                         </h3>
-                        <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-teal-500 text-white text-xs font-bold rounded-full">
+                        <span className="px-3 py-1 bg-linear-to-r from-blue-500 to-teal-500 text-white text-xs font-bold rounded-full">
                           In Progress
                         </span>
                       </div>
@@ -542,7 +527,7 @@ const DriverDashboardPage: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="p-4 bg-white rounded-xl border border-gray-100">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-teal-100 to-blue-100 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-br from-teal-100 to-blue-100 rounded-lg flex items-center justify-center">
                           <Truck className="w-5 h-5 text-teal-600" />
                         </div>
                         <div>
@@ -556,7 +541,7 @@ const DriverDashboardPage: React.FC = () => {
 
                     <div className="p-4 bg-white rounded-xl border border-gray-100">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-br from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center">
                           <Navigation className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
@@ -570,7 +555,7 @@ const DriverDashboardPage: React.FC = () => {
 
                     <div className="p-4 bg-white rounded-xl border border-gray-100">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-indigo-100 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-br from-rose-100 to-indigo-100 rounded-lg flex items-center justify-center">
                           <DollarSign className="w-5 h-5 text-rose-600" />
                         </div>
                         <div>
@@ -583,7 +568,7 @@ const DriverDashboardPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl">
+                  <div className="mt-6 p-4 bg-linear-to-r from-blue-50 to-teal-50 rounded-xl">
                     <p className="text-sm font-medium text-gray-700 mb-2">
                       Pickup Address
                     </p>
@@ -608,7 +593,7 @@ const DriverDashboardPage: React.FC = () => {
                     <Button
                       variant="primary"
                       size="lg"
-                      className="w-full h-14 bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 text-white shadow-lg"
+                      className="w-full h-14 bg-linear-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 text-white shadow-lg"
                       onClick={() => handleCompletePickup(activePickup.id)}
                     >
                       <CheckCircle className="w-6 h-6 mr-3" />
@@ -628,7 +613,7 @@ const DriverDashboardPage: React.FC = () => {
                     View Details
                   </Button>
 
-                  <div className="p-4 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100">
+                  <div className="p-4 bg-linear-to-r from-gray-50 to-white rounded-xl border border-gray-100">
                     <p className="text-sm font-medium text-gray-700 mb-2">
                       Quick Actions
                     </p>
@@ -653,7 +638,7 @@ const DriverDashboardPage: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="border-2 border-amber-200 bg-gradient-to-r from-amber-50 via-white to-yellow-50/30">
+            <Card className="border-2 border-amber-200 bg-linear-to-r from-amber-50 via-white to-yellow-50/30">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-6">
                   <motion.div
@@ -662,7 +647,7 @@ const DriverDashboardPage: React.FC = () => {
                       scale: [1, 1.1, 1],
                     }}
                     transition={{ repeat: Infinity, duration: 3 }}
-                    className="w-16 h-16 bg-gradient-to-br from-amber-500 to-yellow-400 rounded-2xl flex items-center justify-center"
+                    className="w-16 h-16 bg-linear-to-br from-amber-500 to-yellow-400 rounded-2xl flex items-center justify-center"
                   >
                     <AlertCircle className="w-8 h-8 text-white" />
                   </motion.div>
@@ -688,7 +673,7 @@ const DriverDashboardPage: React.FC = () => {
                   <Button
                     variant="primary"
                     size="lg"
-                    className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 text-white"
+                    className="bg-linear-to-r from-teal-500 to-blue-500 hover:from-blue-500 hover:to-teal-500 text-white"
                     onClick={() => (window.location.href = "/driver/available")}
                   >
                     <MapPin className="w-5 h-5 mr-2" />
@@ -709,7 +694,7 @@ const DriverDashboardPage: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
               <Sparkles className="w-5 h-5 text-teal-500" />
@@ -725,8 +710,8 @@ const DriverDashboardPage: React.FC = () => {
                                         w-full p-4 rounded-xl border-2 text-left transition-all duration-300 group
                                         ${
                                           action.variant === "primary"
-                                            ? `bg-gradient-to-r ${action.color} text-white border-transparent shadow-lg`
-                                            : `bg-white ${action.color} hover:bg-gradient-to-br hover:from-white hover:to-gray-50 border`
+                                            ? `bg-linear-to-r ${action.color} text-white border-transparent shadow-lg`
+                                            : `bg-white ${action.color} hover:bg-linear-to-br hover:from-white hover:to-gray-50 border`
                                         }
                                     `}
                 >
@@ -757,7 +742,7 @@ const DriverDashboardPage: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="lg:col-span-2"
         >
-          <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -781,11 +766,11 @@ const DriverDashboardPage: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="p-5 bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300"
+                  className="p-5 bg-linear-to-br from-white to-gray-50 rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div
-                      className={`p-2 rounded-lg bg-gradient-to-br ${tip.color}`}
+                      className={`p-2 rounded-lg bg-linear-to-br ${tip.color}`}
                     >
                       {tip.icon}
                     </div>
@@ -811,7 +796,7 @@ const DriverDashboardPage: React.FC = () => {
                         initial={{ width: 0 }}
                         animate={{ width: `${tip.progress}%` }}
                         transition={{ duration: 1, delay: index * 0.2 + 0.5 }}
-                        className={`h-full rounded-full bg-gradient-to-r ${tip.color}`}
+                        className={`h-full rounded-full bg-linear-to-r ${tip.color}`}
                       />
                     </div>
                   </div>
@@ -831,7 +816,7 @@ const DriverDashboardPage: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+            <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">
@@ -842,7 +827,7 @@ const DriverDashboardPage: React.FC = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  className="bg-gradient-to-r from-teal-500 to-blue-500 text-white"
+                  className="bg-linear-to-r from-teal-500 to-blue-500 text-white"
                   onClick={() => handleStartPickup(nextPickup.id)}
                 >
                   <PlayCircle className="w-4 h-4 mr-2" />
@@ -851,8 +836,8 @@ const DriverDashboardPage: React.FC = () => {
               </div>
 
               <div className="space-y-6">
-                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl">
-                  <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
+                <div className="flex items-center gap-4 p-4 bg-linear-to-r from-teal-50 to-blue-50 rounded-xl">
+                  <div className="w-12 h-12 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
                     <Clock className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -930,7 +915,7 @@ const DriverDashboardPage: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -942,7 +927,7 @@ const DriverDashboardPage: React.FC = () => {
             </div>
 
             <div className="space-y-6">
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-xl">
+              <div className="flex items-center justify-between p-4 bg-linear-to-r from-green-50 to-teal-50 rounded-xl">
                 <div>
                   <p className="text-sm text-gray-600">Today's Earnings</p>
                   <p className="text-2xl font-bold text-gray-900">
@@ -964,7 +949,7 @@ const DriverDashboardPage: React.FC = () => {
                       width: `${(animatedStats.todayEarnings / 500) * 100}%`,
                     }}
                     transition={{ duration: 1, delay: 0.8 }}
-                    className="h-full bg-gradient-to-r from-teal-500 to-green-500 rounded-full"
+                    className="h-full bg-linear-to-r from-teal-500 to-green-500 rounded-full"
                   />
                 </div>
                 <div className="text-sm text-gray-500 text-center">

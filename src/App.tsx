@@ -12,6 +12,7 @@ import PageNotFound from './pages/public/PageNotFound';
 
 // Lazy load pages for better performance
 const LandingPage = lazy(() => import('./pages/public/LandingPage'));
+const HowItWorksPage = lazy(() => import('./pages/public/HowItWorks'));
 const LoginPage = lazy(() => import('./pages/public/Login'));
 const RegisterPage = lazy(() => import('./pages/public/RegisterPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/public/ForgotPasswordPage'));
@@ -65,6 +66,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
+      <Route path="/how-it-works" element={<HowItWorksPage />} />
       <Route path="/login" element={
         user ? <Navigate to="/dashboard" replace /> : <LoginPage />
       } />

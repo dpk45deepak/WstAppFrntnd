@@ -18,7 +18,6 @@ import {
   Users,
   Shield,
   MapPin,
-  Sparkles,
   Leaf,
   TrendingUp,
   Recycle,
@@ -55,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeHover, setActiveHover] = useState<string | null>(null);
+  const [_, setActiveHover] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [unreadNotifications] = useState(5);
 
@@ -284,14 +283,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
   ];
 
-  // Environmental impact metrics
-  const ecoMetrics = {
-    wasteDiverted: "245 kg",
-    carbonSaved: "128 kg CO₂",
-    treesSaved: 3,
-    points: 1560,
-  };
-
   const getNavItems = () => {
     if (!user) return commonItems;
 
@@ -330,7 +321,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             ${isCollapsed ? "justify-center px-3 py-4" : ""}
             ${
               isActive
-                ? `bg-gradient-to-r ${item.color} text-white shadow-lg`
+                ? `bg-linear-to-r ${item.color} text-white shadow-lg`
                 : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:shadow-md"
             }
           `}
@@ -394,9 +385,9 @@ const Sidebar: React.FC<SidebarProps> = ({
       >
         <motion.div
           whileHover={{ scale: 1.1, rotate: 5 }}
-          className="relative flex-shrink-0"
+          className="relative shrink-0"
         >
-          <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
             <User className="w-6 h-6 text-white" />
           </div>
           <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white" />
@@ -414,7 +405,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <p className="text-xs text-gray-500 truncate">{user?.email}</p>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="inline-flex items-center mt-2 px-2 py-1 rounded-lg bg-gradient-to-r from-teal-50 to-blue-50 text-teal-700 text-xs font-bold"
+              className="inline-flex items-center mt-2 px-2 py-1 rounded-lg bg-linear-to-r from-teal-50 to-blue-50 text-teal-700 text-xs font-bold"
             >
               {user?.role === "admin" && <Shield className="w-3 h-3 mr-1" />}
               {user?.role === "driver" && <Truck className="w-3 h-3 mr-1" />}
@@ -424,34 +415,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           </motion.div>
         )}
       </div>
-
-      {!isCollapsed && user?.role === "user" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mt-4 p-3 bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-gray-700">Eco Points</span>
-            <Sparkles className="w-4 h-4 text-teal-500" />
-          </div>
-          <div className="flex items-end justify-between">
-            <span className="text-lg font-bold text-teal-700">
-              {ecoMetrics.points}
-            </span>
-            <span className="text-xs text-gray-500">Level 3</span>
-          </div>
-          <div className="mt-2 h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-r from-teal-500 to-blue-500 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: "65%" }}
-              transition={{ duration: 1, delay: 0.5 }}
-            />
-          </div>
-        </motion.div>
-      )}
     </motion.div>
   );
 
@@ -463,7 +426,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           animate={{ opacity: 1, x: 0 }}
           className="flex items-center gap-3"
         >
-          <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
             <Recycle className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -542,45 +505,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         </AnimatePresence>
       </nav>
 
-      {/* Environmental Impact (for users) */}
-      {!isCollapsed && user?.role === "user" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="p-4 border-t border-gray-100"
-        >
-          <div className="p-3 bg-gradient-to-br from-teal-50 to-blue-50 rounded-xl">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-gray-700">
-                ENVIRONMENTAL IMPACT
-              </span>
-              <Leaf className="w-4 h-4 text-teal-500" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Waste Diverted</span>
-                <span className="font-bold text-teal-700">
-                  {ecoMetrics.wasteDiverted}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Carbon Saved</span>
-                <span className="font-bold text-teal-700">
-                  {ecoMetrics.carbonSaved}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Trees Equivalent</span>
-                <span className="font-bold text-teal-700">
-                  {ecoMetrics.treesSaved} trees
-                </span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-
       {/* Logout button */}
       <div className="p-4 border-t border-gray-100">
         <motion.button
@@ -591,7 +515,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             flex items-center w-full px-4 py-3 text-sm font-bold
             rounded-xl transition-all duration-300
             ${isCollapsed ? "justify-center px-3 py-4" : ""}
-            bg-gradient-to-r from-rose-50 to-rose-100 text-rose-700
+            bg-linear-to-r from-rose-50 to-rose-100 text-rose-700
             hover:from-rose-100 hover:to-rose-200 hover:shadow-md
           `}
         >

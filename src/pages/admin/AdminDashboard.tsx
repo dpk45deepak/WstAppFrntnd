@@ -7,11 +7,9 @@ import {
   DollarSign,
   TrendingUp,
   TrendingDown,
-  Calendar,
   MapPin,
   Shield,
   BarChart3,
-  PlusCircle,
   Activity,
   Zap,
   Sparkles,
@@ -114,7 +112,7 @@ const AdminDashboardPage: React.FC = () => {
       icon: <Users className="w-6 h-6" />,
       change: animatedStats?.userGrowth || 0,
       color: "from-blue-500 to-teal-400",
-      bgColor: "bg-gradient-to-br from-blue-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-blue-50 via-white to-white",
       borderColor: "border-blue-200",
       delay: 0.1,
       to: "/admin/users",
@@ -125,7 +123,7 @@ const AdminDashboardPage: React.FC = () => {
       icon: <Package className="w-6 h-6" />,
       subValue: `${animatedStats?.pendingPickups || 0} pending`,
       color: "from-teal-500 to-blue-400",
-      bgColor: "bg-gradient-to-br from-teal-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-teal-50 via-white to-white",
       borderColor: "border-teal-200",
       delay: 0.2,
       to: "/admin/pickups",
@@ -136,7 +134,7 @@ const AdminDashboardPage: React.FC = () => {
       icon: <Truck className="w-6 h-6" />,
       subValue: `${animatedStats?.totalDrivers || 0} total`,
       color: "from-rose-500 to-indigo-400",
-      bgColor: "bg-gradient-to-br from-rose-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-rose-50 via-white to-white",
       borderColor: "border-rose-200",
       delay: 0.3,
       to: "/admin/drivers",
@@ -147,7 +145,7 @@ const AdminDashboardPage: React.FC = () => {
       icon: <DollarSign className="w-6 h-6" />,
       change: animatedStats?.revenueGrowth || 0,
       color: "from-indigo-500 to-blue-400",
-      bgColor: "bg-gradient-to-br from-indigo-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-indigo-50 via-white to-white",
       borderColor: "border-indigo-200",
       delay: 0.4,
       to: "/admin/reports",
@@ -187,7 +185,7 @@ const AdminDashboardPage: React.FC = () => {
       value: "98.5%",
       icon: <Target className="w-5 h-5" />,
       color: "from-green-500 to-teal-400",
-      bgColor: "bg-gradient-to-br from-green-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-green-50 via-white to-white",
       borderColor: "border-green-200",
       change: "+2.3%",
     },
@@ -196,7 +194,7 @@ const AdminDashboardPage: React.FC = () => {
       value: "15 min",
       icon: <Clock className="w-5 h-5" />,
       color: "from-blue-500 to-indigo-400",
-      bgColor: "bg-gradient-to-br from-blue-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-blue-50 via-white to-white",
       borderColor: "border-blue-200",
       change: "-5 min",
     },
@@ -205,7 +203,7 @@ const AdminDashboardPage: React.FC = () => {
       value: "85%",
       icon: <MapPin className="w-5 h-5" />,
       color: "from-rose-500 to-purple-400",
-      bgColor: "bg-gradient-to-br from-rose-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-rose-50 via-white to-white",
       borderColor: "border-rose-200",
       change: "+12%",
     },
@@ -214,35 +212,11 @@ const AdminDashboardPage: React.FC = () => {
       value: "4.8",
       icon: <CheckCircle className="w-5 h-5" />,
       color: "from-indigo-500 to-blue-400",
-      bgColor: "bg-gradient-to-br from-indigo-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-indigo-50 via-white to-white",
       borderColor: "border-indigo-200",
       change: "+0.3",
     },
   ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
 
   if (loading) {
     return (
@@ -292,7 +266,7 @@ const AdminDashboardPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-xl shadow-lg"
+            className="flex items-center px-4 py-2 bg-linear-to-r from-teal-500 to-blue-500 text-white rounded-xl shadow-lg"
           >
             <Zap className="w-4 h-4 mr-2" />
             <span className="font-semibold">Administrator</span>
@@ -350,7 +324,7 @@ const AdminDashboardPage: React.FC = () => {
               <div className="relative z-10">
                 <div className="flex items-start justify-between mb-6">
                   <div
-                    className={`p-3 rounded-xl bg-gradient-to-br ${stat.color} shadow-md`}
+                    className={`p-3 rounded-xl bg-linear-to-br ${stat.color} shadow-md`}
                   >
                     {stat.icon}
                   </div>
@@ -413,7 +387,7 @@ const AdminDashboardPage: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
               <Sparkles className="w-5 h-5 text-teal-500" />
@@ -429,8 +403,8 @@ const AdminDashboardPage: React.FC = () => {
                     w-full p-4 rounded-xl border-2 text-left transition-all duration-300 group
                     ${
                       action.variant === "primary"
-                        ? `bg-gradient-to-r ${action.color} text-white border-transparent shadow-lg hover:shadow-xl`
-                        : `bg-white ${action.color} hover:bg-gradient-to-br hover:from-white hover:to-gray-50`
+                        ? `bg-linear-to-r ${action.color} text-white border-transparent shadow-lg hover:shadow-xl`
+                        : `bg-white ${action.color} hover:bg-linear-to-br hover:from-white hover:to-gray-50`
                     }
                   `}
                 >
@@ -461,7 +435,7 @@ const AdminDashboardPage: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="lg:col-span-2"
         >
-          <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -498,22 +472,22 @@ const AdminDashboardPage: React.FC = () => {
                     >
                       <div className="shrink-0 mt-1">
                         {activity.type === "user" && (
-                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-teal-400 rounded-xl flex items-center justify-center shadow-sm">
+                          <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-teal-400 rounded-xl flex items-center justify-center shadow-sm">
                             <Users className="w-5 h-5 text-white" />
                           </div>
                         )}
                         {activity.type === "pickup" && (
-                          <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-400 rounded-xl flex items-center justify-center shadow-sm">
+                          <div className="w-10 h-10 bg-linear-to-br from-teal-500 to-blue-400 rounded-xl flex items-center justify-center shadow-sm">
                             <Package className="w-5 h-5 text-white" />
                           </div>
                         )}
                         {activity.type === "driver" && (
-                          <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-indigo-400 rounded-xl flex items-center justify-center shadow-sm">
+                          <div className="w-10 h-10 bg-linear-to-br from-rose-500 to-indigo-400 rounded-xl flex items-center justify-center shadow-sm">
                             <Truck className="w-5 h-5 text-white" />
                           </div>
                         )}
                         {activity.type === "payment" && (
-                          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-blue-400 rounded-xl flex items-center justify-center shadow-sm">
+                          <div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-blue-400 rounded-xl flex items-center justify-center shadow-sm">
                             <DollarSign className="w-5 h-5 text-white" />
                           </div>
                         )}
@@ -549,7 +523,7 @@ const AdminDashboardPage: React.FC = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-12"
                 >
-                  <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl flex items-center justify-center">
+                  <div className="w-20 h-20 mx-auto mb-6 bg-linear-to-br from-gray-100 to-gray-50 rounded-2xl flex items-center justify-center">
                     <Activity className="w-8 h-8 text-gray-400" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -571,7 +545,7 @@ const AdminDashboardPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+        <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-xl font-bold text-gray-900">
@@ -594,7 +568,7 @@ const AdminDashboardPage: React.FC = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div
-                    className={`p-3 rounded-xl bg-gradient-to-br ${metric.color}`}
+                    className={`p-3 rounded-xl bg-linear-to-br ${metric.color}`}
                   >
                     {metric.icon}
                   </div>
@@ -610,7 +584,7 @@ const AdminDashboardPage: React.FC = () => {
                 </p>
                 <div className="mt-4 h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
                   <motion.div
-                    className={`h-full bg-gradient-to-r ${metric.color} rounded-full`}
+                    className={`h-full bg-linear-to-r ${metric.color} rounded-full`}
                     initial={{ width: 0 }}
                     animate={{ width: metric.value }}
                     transition={{ duration: 1, delay: index * 0.1 + 0.5 }}

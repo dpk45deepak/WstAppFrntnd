@@ -6,7 +6,6 @@ import {
   Package,
   MapPin,
   Clock,
-  User,
   CheckCircle,
   XCircle,
   Eye,
@@ -15,12 +14,9 @@ import {
   TrendingUp,
   DollarSign,
   Award,
-  Battery,
   RefreshCw,
-  ChevronRight,
   AlertCircle,
-//   Sparkles,
-//   BarChart3,
+
 Shield,
     Leaf,
   Zap,
@@ -35,7 +31,6 @@ import pickupService from "../../services/pickup";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
 import Pagination from "../../components/common/Pagination";
 
 interface DriverPickup {
@@ -71,7 +66,7 @@ const DriverPickupsPage: React.FC = () => {
     "all" | "today" | "active" | "upcoming"
   >("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
-  const [selectedPickup, setSelectedPickup] = useState<DriverPickup | null>(
+  const [_, setSelectedPickup] = useState<DriverPickup | null>(
     null,
   );
   const [showQuickActions, setShowQuickActions] = useState(false);
@@ -215,22 +210,22 @@ const DriverPickupsPage: React.FC = () => {
   const getStatusBadge = (status: DriverPickup["status"]) => {
     const statusConfig = {
       scheduled: {
-        color: "bg-gradient-to-r from-yellow-500 to-amber-500 text-white",
+        color: "bg-linear-to-r from-yellow-500 to-amber-500 text-white",
         icon: <Clock className="w-3 h-3 animate-pulse" />,
         glow: "shadow-lg shadow-yellow-500/30",
       },
       in_progress: {
-        color: "bg-gradient-to-r from-blue-500 to-blue-600 text-white",
+        color: "bg-linear-to-r from-blue-500 to-blue-600 text-white",
         icon: <Navigation className="w-3 h-3 animate-spin-slow" />,
         glow: "shadow-lg shadow-blue-500/30",
       },
       completed: {
-        color: "bg-gradient-to-r from-teal-500 to-teal-600 text-white",
+        color: "bg-linear-to-r from-teal-500 to-teal-600 text-white",
         icon: <CheckCircle className="w-3 h-3" />,
         glow: "shadow-lg shadow-teal-500/30",
       },
       cancelled: {
-        color: "bg-gradient-to-r from-rose-500 to-rose-600 text-white",
+        color: "bg-linear-to-r from-rose-500 to-rose-600 text-white",
         icon: <XCircle className="w-3 h-3" />,
         glow: "shadow-lg shadow-rose-500/30",
       },
@@ -251,22 +246,22 @@ const DriverPickupsPage: React.FC = () => {
     const icons = {
       general: {
         icon: <Package className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-gray-500 to-gray-600",
+        color: "bg-linear-to-br from-gray-500 to-gray-600",
         bg: "bg-gray-100",
       },
       recyclable: {
         icon: <RefreshCw className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-blue-500 to-blue-600",
+        color: "bg-linear-to-br from-blue-500 to-blue-600",
         bg: "bg-blue-100",
       },
       hazardous: {
         icon: <Shield className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-rose-500 to-rose-600",
+        color: "bg-linear-to-br from-rose-500 to-rose-600",
         bg: "bg-rose-100",
       },
       organic: {
         icon: <Leaf className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-teal-500 to-teal-600",
+        color: "bg-linear-to-br from-teal-500 to-teal-600",
         bg: "bg-teal-100",
       },
     };
@@ -283,24 +278,24 @@ const DriverPickupsPage: React.FC = () => {
     if (diffMs < 0)
       return {
         text: "Overdue",
-        color: "bg-gradient-to-r from-rose-500 to-rose-600",
+        color: "bg-linear-to-r from-rose-500 to-rose-600",
         urgency: "high",
       };
     if (diffHours > 1)
       return {
         text: `${diffHours}h`,
-        color: "bg-gradient-to-r from-teal-500 to-teal-600",
+        color: "bg-linear-to-r from-teal-500 to-teal-600",
         urgency: "low",
       };
     if (diffHours > 0)
       return {
         text: `${diffHours}h ${diffMinutes}m`,
-        color: "bg-gradient-to-r from-amber-500 to-amber-600",
+        color: "bg-linear-to-r from-amber-500 to-amber-600",
         urgency: "medium",
       };
     return {
       text: `${diffMinutes}m`,
-      color: "bg-gradient-to-r from-rose-500 to-rose-600",
+      color: "bg-linear-to-r from-rose-500 to-rose-600",
       urgency: "high",
     };
   };
@@ -342,11 +337,11 @@ const DriverPickupsPage: React.FC = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
         <div className="relative">
-          <div className="w-20 h-20 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full animate-spin-slow"></div>
+          <div className="w-20 h-20 bg-linear-to-r from-teal-500 to-blue-500 rounded-full animate-spin-slow"></div>
           <Truck className="absolute inset-0 m-auto w-10 h-10 text-white animate-bounce-slow" />
         </div>
         <div className="text-center">
-          <h3 className="text-xl font-semibold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+          <h3 className="text-xl font-semibold bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
             Loading Your Pickups
           </h3>
           <p className="text-gray-500 mt-2">
@@ -382,17 +377,17 @@ const DriverPickupsPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Header with Animated Background */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-teal-50 to-blue-50 p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-teal-50 to-blue-50 p-8 shadow-xl">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative z-10">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-gradient-to-r from-teal-500 to-blue-500 rounded-2xl shadow-lg">
+                <div className="p-3 bg-linear-to-r from-teal-500 to-blue-500 rounded-2xl shadow-lg">
                   <Truck className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
                     My Pickups
                   </h1>
                   <p className="text-gray-600">
@@ -403,8 +398,8 @@ const DriverPickupsPage: React.FC = () => {
             </div>
             <div className="flex flex-wrap gap-3">
               <Button
-                // variant="gradient"
-                // gradient="teal-blue"
+                // variant="linear"
+                // linear="teal-blue"
                 onClick={() => (window.location.href = "/driver/available")}
                 className="group relative overflow-hidden"
               >
@@ -467,7 +462,7 @@ const DriverPickupsPage: React.FC = () => {
           >
             <div className="relative">
               <div
-                className={`absolute -right-4 -top-4 w-20 h-20 rounded-full bg-gradient-to-br ${stat.color} opacity-10 group-hover:scale-125 transition-transform duration-500`}
+                className={`absolute -right-4 -top-4 w-20 h-20 rounded-full bg-linear-to-br ${stat.color} opacity-10 group-hover:scale-125 transition-transform duration-500`}
               ></div>
               <div className="flex items-center justify-between">
                 <div>
@@ -492,7 +487,7 @@ const DriverPickupsPage: React.FC = () => {
                   <p className="text-xs text-gray-500 mt-1">{stat.metric}</p>
                 </div>
                 <div
-                  className={`p-3 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-lg group-hover:rotate-12 transition-transform duration-500`}
+                  className={`p-3 rounded-2xl bg-linear-to-br ${stat.color} text-white shadow-lg group-hover:rotate-12 transition-transform duration-500`}
                 >
                   {stat.icon}
                 </div>
@@ -542,7 +537,7 @@ const DriverPickupsPage: React.FC = () => {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`relative px-4 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 ${
                     activeTab === tab.id
-                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg shadow-teal-500/30"
+                      ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg shadow-teal-500/30"
                       : "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-gray-200"
                   }`}
                 >
@@ -582,8 +577,8 @@ const DriverPickupsPage: React.FC = () => {
               </div>
               {activePickups > 0 && (
                 <Button
-                //   variant="gradient"
-                //   gradient="blue-indigo"
+                //   variant="linear"
+                //   linear="blue-indigo"
                   onClick={() => setShowQuickActions(!showQuickActions)}
                   className="group relative overflow-hidden"
                 >
@@ -655,7 +650,7 @@ const DriverPickupsPage: React.FC = () => {
         <Card className="border-2 border-teal-500 shadow-lg animate-slideDown">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
+              <div className="w-10 h-10 bg-linear-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
                 <Zap className="w-5 h-5 text-white animate-pulse" />
               </div>
               <div>
@@ -691,7 +686,7 @@ const DriverPickupsPage: React.FC = () => {
                       {getWasteTypeIcon(pickup.wasteType).icon}
                     </div>
                     <div>
-                      <div className="text-sm font-medium truncate max-w-[120px]">
+                      <div className="text-sm font-medium truncate max-w-30">
                         {pickup.userName}
                       </div>
                       <div className="text-xs text-gray-500">
@@ -703,8 +698,8 @@ const DriverPickupsPage: React.FC = () => {
                     {pickup.status === "scheduled" && (
                       <Button
                         size="sm"
-                        // variant="gradient"
-                        // gradient="teal-blue"
+                        // variant="linear"
+                        // linear="teal-blue"
                         onClick={() => handleQuickAction(pickup.id, "start")}
                         className="group"
                       >
@@ -714,8 +709,8 @@ const DriverPickupsPage: React.FC = () => {
                     {pickup.status === "in_progress" && (
                       <Button
                         size="sm"
-                        // variant="gradient"
-                        // gradient="blue-indigo"
+                        // variant="linear"
+                        // linear="blue-indigo"
                         onClick={() => handleQuickAction(pickup.id, "complete")}
                         className="group"
                       >
@@ -817,7 +812,7 @@ const DriverPickupsPage: React.FC = () => {
                 <div className="pt-6 border-t border-gray-100">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                      <div className="text-2xl font-bold bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                         ${pickup.price}
                       </div>
                       <div className="text-xs text-gray-500">Earnings</div>
@@ -834,8 +829,8 @@ const DriverPickupsPage: React.FC = () => {
                       {pickup.status === "scheduled" && (
                         <Button
                           size="sm"
-                        //   variant="gradient"
-                        //   gradient="teal-blue"
+                        //   variant="linear"
+                        //   linear="teal-blue"
                           onClick={() => handleStatusUpdate(pickup.id, "start")}
                           className="group relative overflow-hidden"
                         >
@@ -847,8 +842,8 @@ const DriverPickupsPage: React.FC = () => {
                       {pickup.status === "in_progress" && (
                         <Button
                           size="sm"
-                        //   variant="gradient"
-                        //   gradient="blue-indigo"
+                        //   variant="linear"
+                        //   linear="blue-indigo"
                           onClick={() =>
                             handleStatusUpdate(pickup.id, "complete")
                           }
@@ -864,7 +859,7 @@ const DriverPickupsPage: React.FC = () => {
                 </div>
 
                 {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               </Card>
             );
           })}
@@ -987,7 +982,7 @@ const DriverPickupsPage: React.FC = () => {
                     {/* Right Section - Actions & Price */}
                     <div className="lg:w-56 space-y-4">
                       <div className="text-center">
-                        <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                        <div className="text-3xl font-bold bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                           ${pickup.price}
                         </div>
                         <div className="text-sm text-gray-500">Earnings</div>
@@ -1006,8 +1001,8 @@ const DriverPickupsPage: React.FC = () => {
 
                         {pickup.status === "scheduled" && (
                           <Button
-                            // variant="gradient"
-                            // gradient="teal-blue"
+                            // variant="linear"
+                            // linear="teal-blue"
                             size="sm"
                             className="w-full group relative overflow-hidden"
                             onClick={() =>
@@ -1022,8 +1017,8 @@ const DriverPickupsPage: React.FC = () => {
 
                         {pickup.status === "in_progress" && (
                           <Button
-                            // variant="gradient"
-                            // gradient="blue-indigo"
+                            // variant="linear"
+                            // linear="blue-indigo"
                             size="sm"
                             className="w-full group relative overflow-hidden"
                             onClick={() =>
@@ -1039,8 +1034,8 @@ const DriverPickupsPage: React.FC = () => {
                         {(pickup.status === "scheduled" ||
                           pickup.status === "in_progress") && (
                           <Button
-                            // variant="gradient"
-                            // gradient="rose-rose"
+                            // variant="linear"
+                            // linear="rose-rose"
                             size="sm"
                             className="w-full group relative overflow-hidden"
                             onClick={() => {
@@ -1068,7 +1063,7 @@ const DriverPickupsPage: React.FC = () => {
             <Card>
               <div className="text-center py-16">
                 <div className="w-24 h-24 mx-auto mb-6 relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full opacity-10 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-linear-to-r from-teal-500 to-blue-500 rounded-full opacity-10 animate-pulse"></div>
                   <Package className="relative w-12 h-12 mx-auto text-gray-300" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -1080,8 +1075,8 @@ const DriverPickupsPage: React.FC = () => {
                     : "You don't have any pickups assigned yet. Find new pickups to get started!"}
                 </p>
                 <Button
-                //   variant="gradient"
-                //   gradient="teal-blue"
+                //   variant="linear"
+                //   linear="teal-blue"
                   onClick={() => (window.location.href = "/driver/available")}
                   className="group"
                 >
@@ -1109,7 +1104,7 @@ const DriverPickupsPage: React.FC = () => {
       {activePickups > 0 && !showQuickActions && (
         <button
           onClick={() => setShowQuickActions(true)}
-          className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 animate-bounce-slow z-50 group"
+          className="fixed bottom-8 right-8 w-14 h-14 bg-linear-to-r from-blue-500 to-indigo-500 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 animate-bounce-slow z-50 group"
         >
           <Zap className="w-6 h-6 group-hover:rotate-45 transition-transform duration-500" />
           <div className="absolute -inset-4 bg-blue-500/20 rounded-full animate-ping opacity-0 group-hover:opacity-100"></div>

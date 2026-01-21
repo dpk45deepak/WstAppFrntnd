@@ -53,7 +53,7 @@ const HeroSection = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative z-10 py-4"
         >
-          <Badge className="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-200 bg-emerald-100/50 text-emerald-700 backdrop-blur-md">
+          <Badge className="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-200 bg-emerald-100 text-emerald-700 backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5" />
             <span className="text-sm font-semibold tracking-wide uppercase">
               AI-Powered Waste Solutions
@@ -62,7 +62,7 @@ const HeroSection = () => {
 
           <h1 className="text-4xl md:text-4xl xl:text-5xl font-black tracking-tight leading-[1.1] mb-8">
             <span className="block text-slate-900">Smart Waste</span>
-            <span className="block py-2 bg-gradient-to-r from-emerald-600 via-teal-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="block py-2 bg-linear-to-r from-emerald-600 via-teal-500 to-blue-600 bg-clip-text text-transparent">
               Management
             </span>
           </h1>
@@ -83,7 +83,7 @@ const HeroSection = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + i * 0.1 }}
-                className="flex items-center gap-3 bg-white border border-slate-200 rounded-2xl px-5 py-4 hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-500/5 transition-all"
+                className="flex items-center gap-3 bg-teal-100 border border-slate-200 rounded-2xl px-5 py-4 hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-500/5 transition-all"
               >
                 <div className="p-2 rounded-lg bg-slate-50">{f.icon}</div>
                 <span className="text-slate-700 font-semibold text-sm">
@@ -153,7 +153,7 @@ const HeroSection = () => {
             </p>
           </motion.div>
 
-          <div className="relative z-10 p-1 bg-gradient-to-br from-emerald-100 to-cyan-100 rounded-[42px] border border-white shadow-2xl">
+          <div className="relative z-10 p-1 bg-linear-to-br from-emerald-100 to-cyan-100 rounded-[42px] border border-white shadow-2xl">
             <div className="bg-white rounded-[40px] overflow-hidden p-8 border border-slate-100">
               <div className="flex items-center justify-between mb-10">
                 <div>
@@ -231,7 +231,7 @@ const HeroSection = () => {
                         animate={{ width: `${item.val}%` }}
                         transition={{ duration: 1.5, delay: 0.8 + idx * 0.2 }}
                         className={cn(
-                          "h-full rounded-full bg-gradient-to-r",
+                          "h-full rounded-full bg-linear-to-r",
                           item.color
                         )}
                       />

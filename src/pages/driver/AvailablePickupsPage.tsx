@@ -14,17 +14,12 @@ import {
   AlertCircle,
   TrendingUp,
   Zap,
-  Battery,
   Leaf,
   Shield,
-  Sparkles,
   Target,
   Compass,
-  BarChart3,
   RefreshCw,
-  ChevronRight,
-  ExternalLink,
-  Award,
+
 } from "lucide-react";
 import { useToast } from "../../hooks/useToast";
 import { useAuth } from "../../hooks/useAuth";
@@ -32,7 +27,6 @@ import pickupService from "../../services/pickup";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
 import Pagination from "../../components/common/Pagination";
 
 interface AvailablePickup {
@@ -215,17 +209,17 @@ const AvailablePickupsPage: React.FC = () => {
   const getPriorityBadge = (priority: AvailablePickup["priority"]) => {
     const config = {
       low: {
-        color: "bg-gradient-to-r from-teal-500 to-teal-600 text-white",
+        color: "bg-linear-to-r from-teal-500 to-teal-600 text-white",
         icon: <CheckCircle className="w-3 h-3" />,
         glow: "shadow-lg shadow-teal-500/30",
       },
       medium: {
-        color: "bg-gradient-to-r from-amber-500 to-amber-600 text-white",
+        color: "bg-linear-to-r from-amber-500 to-amber-600 text-white",
         icon: <AlertCircle className="w-3 h-3" />,
         glow: "shadow-lg shadow-amber-500/30",
       },
       high: {
-        color: "bg-gradient-to-r from-rose-500 to-rose-600 text-white",
+        color: "bg-linear-to-r from-rose-500 to-rose-600 text-white",
         icon: <AlertCircle className="w-3 h-3 animate-pulse" />,
         glow: "shadow-lg shadow-rose-500/30",
       },
@@ -245,22 +239,22 @@ const AvailablePickupsPage: React.FC = () => {
     const icons = {
       general: {
         icon: <Package className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-gray-500 to-gray-600",
+        color: "bg-linear-to-br from-gray-500 to-gray-600",
         bg: "bg-gray-100",
       },
       recyclable: {
         icon: <RefreshCw className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-blue-500 to-blue-600",
+        color: "bg-linear-to-br from-blue-500 to-blue-600",
         bg: "bg-blue-100",
       },
       hazardous: {
         icon: <Shield className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-rose-500 to-rose-600",
+        color: "bg-linear-to-br from-rose-500 to-rose-600",
         bg: "bg-rose-100",
       },
       organic: {
         icon: <Leaf className="w-5 h-5" />,
-        color: "bg-gradient-to-br from-teal-500 to-teal-600",
+        color: "bg-linear-to-br from-teal-500 to-teal-600",
         bg: "bg-teal-100",
       },
     };
@@ -302,11 +296,11 @@ const AvailablePickupsPage: React.FC = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
         <div className="relative">
-          <div className="w-20 h-20 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full animate-spin-slow"></div>
+          <div className="w-20 h-20 bg-linear-to-r from-teal-500 to-blue-500 rounded-full animate-spin-slow"></div>
           <Package className="absolute inset-0 m-auto w-10 h-10 text-white animate-bounce-slow" />
         </div>
         <div className="text-center">
-          <h3 className="text-xl font-semibold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+          <h3 className="text-xl font-semibold bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
             Finding Available Pickups
           </h3>
           <p className="text-gray-500 mt-2">
@@ -320,17 +314,17 @@ const AvailablePickupsPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* Header with Animated Background */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-blue-50 to-teal-50 p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-blue-50 to-teal-50 p-8 shadow-xl">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative z-10">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-gradient-to-r from-teal-500 to-blue-500 rounded-2xl shadow-lg">
+                <div className="p-3 bg-linear-to-r from-teal-500 to-blue-500 rounded-2xl shadow-lg">
                   <Compass className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
                     Available Pickups
                   </h1>
                   <p className="text-gray-600">
@@ -341,8 +335,8 @@ const AvailablePickupsPage: React.FC = () => {
             </div>
             <div className="flex flex-wrap gap-3">
               <Button
-                // variant="gradient"
-                // gradient="teal-blue"
+                // variant="linear"
+                // linear="teal-blue"
                 onClick={fetchAvailablePickups}
                 className="group relative overflow-hidden"
               >
@@ -405,7 +399,7 @@ const AvailablePickupsPage: React.FC = () => {
           >
             <div className="relative">
               <div
-                className={`absolute -right-4 -top-4 w-20 h-20 rounded-full bg-gradient-to-br ${stat.color} opacity-10 group-hover:scale-125 transition-transform duration-500`}
+                className={`absolute -right-4 -top-4 w-20 h-20 rounded-full bg-linear-to-br ${stat.color} opacity-10 group-hover:scale-125 transition-transform duration-500`}
               ></div>
               <div className="flex items-center justify-between">
                 <div>
@@ -430,7 +424,7 @@ const AvailablePickupsPage: React.FC = () => {
                   <p className="text-xs text-gray-500 mt-1">{stat.metric}</p>
                 </div>
                 <div
-                  className={`p-3 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-lg group-hover:rotate-12 transition-transform duration-500`}
+                  className={`p-3 rounded-2xl bg-linear-to-br ${stat.color} text-white shadow-lg group-hover:rotate-12 transition-transform duration-500`}
                 >
                   {stat.icon}
                 </div>
@@ -472,7 +466,7 @@ const AvailablePickupsPage: React.FC = () => {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`relative px-4 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 ${
                     activeTab === tab.id
-                      ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg shadow-teal-500/30"
+                      ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg shadow-teal-500/30"
                       : "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-gray-200"
                   }`}
                 >
@@ -590,7 +584,7 @@ const AvailablePickupsPage: React.FC = () => {
                 max="50"
                 value={distanceFilter}
                 onChange={(e) => setDistanceFilter(parseInt(e.target.value))}
-                className="w-full h-3 bg-gradient-to-r from-teal-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                className="w-full h-3 bg-linear-to-r from-teal-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider-thumb"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-2">
                 <span className="flex items-center">
@@ -630,7 +624,7 @@ const AvailablePickupsPage: React.FC = () => {
                 >
                   {/* Earnings Badge */}
                   <div className="absolute top-4 right-4 z-10">
-                    <div className="px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold rounded-full shadow-lg">
+                    <div className="px-3 py-1 bg-linear-to-r from-green-500 to-emerald-500 text-white text-xs font-bold rounded-full shadow-lg">
                       ${pickup.price}
                     </div>
                   </div>
@@ -721,8 +715,8 @@ const AvailablePickupsPage: React.FC = () => {
 
                     {/* Accept Button */}
                     <Button
-                      // variant="gradient"
-                      // gradient="teal-blue"
+                      // variant="linear"
+                      // linear="teal-blue"
                       className="w-full group relative overflow-hidden mt-4"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -746,7 +740,7 @@ const AvailablePickupsPage: React.FC = () => {
             <div className="col-span-full">
               <Card className="text-center py-16">
                 <div className="w-24 h-24 mx-auto mb-6 relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full opacity-10 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-linear-to-r from-teal-500 to-blue-500 rounded-full opacity-10 animate-pulse"></div>
                   <Package className="relative w-12 h-12 mx-auto text-gray-300" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -760,8 +754,8 @@ const AvailablePickupsPage: React.FC = () => {
                     : "No pickups are currently available in your area. Check back soon!"}
                 </p>
                 <Button
-                  // variant="gradient"
-                  // gradient="teal-blue"
+                  // variant="linear"
+                  // linear="teal-blue"
                   onClick={() => {
                     setSearchQuery("");
                     setWasteTypeFilter("all");
@@ -845,7 +839,7 @@ const AvailablePickupsPage: React.FC = () => {
                       </div>
                     </td>
                     <td className="py-4 px-6">
-                      <div className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                      <div className="text-xl font-bold bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                         ${pickup.price}
                       </div>
                     </td>
@@ -855,8 +849,8 @@ const AvailablePickupsPage: React.FC = () => {
                     <td className="py-4 px-6">
                       <Button
                         size="sm"
-                        // variant="gradient"
-                        // gradient="teal-blue"
+                        // variant="linear"
+                        // linear="teal-blue"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleAcceptPickup(pickup.id);
@@ -907,9 +901,9 @@ const AvailablePickupsPage: React.FC = () => {
 
             <div className="space-y-6">
               {/* Earnings Highlight */}
-              <div className="bg-gradient-to-r from-teal-50 to-blue-50 rounded-2xl p-6 text-center">
+              <div className="bg-linear-to-r from-teal-50 to-blue-50 rounded-2xl p-6 text-center">
                 <p className="text-sm text-gray-600 mb-2">Estimated Earnings</p>
-                <p className="text-5xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                <p className="text-5xl font-bold bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
                   ${selectedPickup.price}
                 </p>
                 <div className="flex items-center justify-center space-x-4 mt-4">
@@ -1058,7 +1052,7 @@ const AvailablePickupsPage: React.FC = () => {
 
               {/* Special Instructions */}
               {selectedPickup.specialInstructions && (
-                <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4">
+                <div className="bg-linear-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4">
                   <div className="flex items-center mb-2">
                     <AlertCircle className="w-5 h-5 text-amber-500 mr-2" />
                     <h5 className="font-semibold text-gray-900">
@@ -1081,8 +1075,8 @@ const AvailablePickupsPage: React.FC = () => {
                   Cancel
                 </Button>
                 <Button
-                  // variant="gradient"
-                  // gradient="teal-blue"
+                  // variant="linear"
+                  // linear="teal-blue"
                   className="flex-1 group relative overflow-hidden"
                   onClick={() => handleAcceptPickup(selectedPickup.id)}
                   loading={acceptingPickup === selectedPickup.id}
@@ -1121,8 +1115,8 @@ const AvailablePickupsPage: React.FC = () => {
             Live Map
           </Button>
           <Button
-            // variant="gradient"
-            // gradient="teal-blue"
+            // variant="linear"
+            // linear="teal-blue"
             onClick={fetchAvailablePickups}
             className="group relative overflow-hidden"
           >
@@ -1131,8 +1125,8 @@ const AvailablePickupsPage: React.FC = () => {
             <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500"></div>
           </Button>
           <Button
-            // variant="gradient"
-            // gradient="blue-indigo"
+            // variant="linear"
+            // linear="blue-indigo"
             onClick={() => (window.location.href = "/driver/earnings")}
             className="group relative overflow-hidden"
           >

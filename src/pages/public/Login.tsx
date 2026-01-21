@@ -33,7 +33,8 @@ const LoginPage = () => {
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
     try {
-      await login(data.email, data.password);
+      const res = await login(data.email, data.password);
+      console.log('Login response:', res);
       showToast('Login successful!', 'success');
       navigate('/dashboard');
     } catch (error: any) {

@@ -74,7 +74,7 @@ const DashboardPage = () => {
       value: animatedStats.total.toString(),
       icon: <Package className="w-6 h-6" />,
       color: "from-blue-500 to-teal-400",
-      bgColor: "bg-gradient-to-br from-blue-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-blue-50 via-white to-white",
       borderColor: "border-blue-100",
       delay: 0.1,
     },
@@ -83,7 +83,7 @@ const DashboardPage = () => {
       value: animatedStats.scheduled.toString(),
       icon: <Calendar className="w-6 h-6" />,
       color: "from-teal-500 to-blue-400",
-      bgColor: "bg-gradient-to-br from-teal-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-teal-50 via-white to-white",
       borderColor: "border-teal-100",
       delay: 0.2,
     },
@@ -92,7 +92,7 @@ const DashboardPage = () => {
       value: animatedStats.inProgress.toString(),
       icon: <Clock className="w-6 h-6" />,
       color: "from-rose-500 to-indigo-400",
-      bgColor: "bg-gradient-to-br from-rose-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-rose-50 via-white to-white",
       borderColor: "border-rose-100",
       delay: 0.3,
     },
@@ -101,7 +101,7 @@ const DashboardPage = () => {
       value: animatedStats.completed.toString(),
       icon: <CheckCircle className="w-6 h-6" />,
       color: "from-indigo-500 to-blue-400",
-      bgColor: "bg-gradient-to-br from-indigo-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-indigo-50 via-white to-white",
       borderColor: "border-indigo-100",
       delay: 0.4,
     },
@@ -114,19 +114,6 @@ const DashboardPage = () => {
       transition: {
         staggerChildren: 0.1,
         delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
       },
     },
   };
@@ -145,7 +132,7 @@ const DashboardPage = () => {
         transition={{ duration: 0.6, type: "spring" }}
         className="relative overflow-hidden rounded-2xl"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-blue-500/5 to-indigo-500/10" />
+        <div className="absolute inset-0 bg-linear-to-r from-teal-500/10 via-blue-500/5 to-indigo-500/10" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-teal-300/10 rounded-full -translate-y-32 translate-x-32" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-300/10 rounded-full translate-y-48 -translate-x-48" />
 
@@ -177,7 +164,7 @@ const DashboardPage = () => {
               whileTap={{ scale: 0.95 }}
               className="mt-6 md:mt-0"
             >
-              <div className="flex items-center gap-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white px-4 py-3 rounded-xl shadow-lg">
+              <div className="flex items-center gap-2 bg-linear-to-r from-teal-500 to-blue-500 text-white px-4 py-3 rounded-xl shadow-lg">
                 <Leaf className="w-5 h-5" />
                 <span className="font-semibold">Carbon Saved: 42kg</span>
                 <TrendingUp className="w-5 h-5" />
@@ -198,7 +185,7 @@ const DashboardPage = () => {
           <LinkButton
             to="/schedule-pickup"
             size="lg"
-            className="w-full h-full group relative overflow-hidden bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-full h-full group relative overflow-hidden bg-linear-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
             <span className="relative flex items-center justify-center gap-3">
@@ -263,7 +250,7 @@ const DashboardPage = () => {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-6">
                   <div
-                    className={`p-3 rounded-xl bg-gradient-to-br ${stat.color} shadow-md`}
+                    className={`p-3 rounded-xl bg-linear-to-br ${stat.color} shadow-md`}
                   >
                     {stat.icon}
                   </div>
@@ -277,17 +264,17 @@ const DashboardPage = () => {
                   <p className="text-3xl font-bold text-gray-900">
                     {stat.value}
                   </p>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/80 to-transparent absolute bottom-0 right-0 translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-white/80 to-transparent absolute bottom-0 right-0 translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
 
                 <motion.div
-                  className="h-1 w-full bg-gradient-to-r from-gray-200 to-gray-200 rounded-full mt-4 overflow-hidden"
+                  className="h-1 w-full bg-linear-to-r from-gray-200 to-gray-200 rounded-full mt-4 overflow-hidden"
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 1, delay: stat.delay }}
                 >
                   <div
-                    className={`h-full bg-gradient-to-r ${stat.color} rounded-full`}
+                    className={`h-full bg-linear-to-r ${stat.color} rounded-full`}
                   />
                 </motion.div>
               </div>
@@ -304,7 +291,7 @@ const DashboardPage = () => {
       >
         <Card
           padding="lg"
-          className="border border-gray-100 bg-gradient-to-b from-white to-gray-50/50 shadow-lg hover:shadow-xl transition-shadow duration-300"
+          className="border border-gray-100 bg-linear-to-b from-white to-gray-50/50 shadow-lg hover:shadow-xl transition-shadow duration-300"
         >
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -368,7 +355,7 @@ const DashboardPage = () => {
                 className="text-center py-12"
               >
                 <div className="relative w-32 h-32 mx-auto mb-6">
-                  <div className="absolute inset-0 bg-gradient-to-br from-teal-100 to-blue-100 rounded-full" />
+                  <div className="absolute inset-0 bg-linear-to-br from-teal-100 to-blue-100 rounded-full" />
                   <Package className="absolute inset-0 m-auto w-16 h-16 text-teal-500" />
                   <div className="absolute -top-2 -right-2 w-8 h-8 bg-rose-500 rounded-full flex items-center justify-center">
                     <span className="text-white text-xs font-bold">0</span>
@@ -383,7 +370,7 @@ const DashboardPage = () => {
                 </p>
                 <LinkButton
                   to="/schedule-pickup"
-                  className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white shadow-lg"
+                  className="bg-linear-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white shadow-lg"
                 >
                   <Calendar className="w-5 h-5 mr-2" />
                   Schedule First Pickup

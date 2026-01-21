@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar";
 import { useAuth } from "../../hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 import { Leaf, Sparkles, Waves, Recycle, Menu } from "lucide-react";
+import LayoutChildren from "./Children";
 
 interface LayoutProps {
   children: ReactNode;
@@ -49,7 +50,7 @@ const Layout = ({ children }: LayoutProps) => {
     return () => clearTimeout(timer);
   }, [location.pathname, isAuthPage]);
 
-  // Background gradient based on user role and page
+  // Background linear based on user role and page
   const getBackgroundGradient = () => {
     if (isAuthPage) return "from-blue-50 via-teal-50/30 to-indigo-50/20";
     if (isAdminPage) return "from-gray-50 via-blue-50/20 to-indigo-50/10";
@@ -57,30 +58,10 @@ const Layout = ({ children }: LayoutProps) => {
     return "from-gray-50 via-white to-blue-50/5";
   };
 
-  // Page transition variants
-  const pageVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut",
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -20,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-
   // Loading animation
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-br from-teal-50 via-blue-50 to-white flex items-center justify-center">
         <div className="text-center">
           <motion.div
             animate={{
@@ -112,7 +93,7 @@ const Layout = ({ children }: LayoutProps) => {
     return (
       <>
         <div
-          className={`min-h-screen bg-gradient-to-br ${getBackgroundGradient()} relative overflow-hidden`}
+          className={`min-h-screen bg-linear-to-br ${getBackgroundGradient()} relative overflow-hidden`}
         >
           {/* Animated background elements */}
           <AnimatePresence>
@@ -150,7 +131,7 @@ const Layout = ({ children }: LayoutProps) => {
             >
               <Leaf className="w-4 h-4 text-teal-500" />
               <span className="text-sm font-semibold text-gray-700">
-                EcoTrack
+                WstApp
               </span>
               <Sparkles className="w-4 h-4 text-blue-500" />
             </motion.div>
@@ -166,7 +147,7 @@ const Layout = ({ children }: LayoutProps) => {
               x: { duration: 20, repeat: Infinity, ease: "linear" },
               opacity: { duration: 10, repeat: Infinity },
             }}
-            className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-r from-teal-300/10 via-blue-300/10 to-indigo-300/10"
+            className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-r from-teal-300/10 via-blue-300/10 to-indigo-300/10"
           />
 
           <motion.main
@@ -175,7 +156,7 @@ const Layout = ({ children }: LayoutProps) => {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="relative z-10 max-w-4xl mx-auto px-4 py-12"
+            className="relative z-10 max-w-4xl mx-auto"
           >
             {children}
           </motion.main>
@@ -213,7 +194,7 @@ const Layout = ({ children }: LayoutProps) => {
   // Main app layout with sidebar
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white transition-all duration-500 relative overflow-x-hidden">
+      <div className="min-h-screen bg-linear-to-br from-gray-50 to-white transition-all duration-500 relative overflow-x-hidden">
         {/* Floating action buttons for mobile */}
         {user && (
           <motion.div
@@ -224,7 +205,7 @@ const Layout = ({ children }: LayoutProps) => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="w-14 h-14 bg-gradient-to-br from-teal-500 to-blue-500 text-white rounded-full shadow-xl flex items-center justify-center"
+              className="w-14 h-14 bg-linear-to-br from-teal-500 to-blue-500 text-white rounded-full shadow-xl flex items-center justify-center"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               aria-label="Scroll to top"
             >
@@ -238,7 +219,7 @@ const Layout = ({ children }: LayoutProps) => {
           <div
             className="absolute inset-0"
             style={{
-              backgroundImage: `radial-gradient(circle at 25px 25px, #06b6d4 2%, transparent 0%), radial-gradient(circle at 75px 75px, #3b82f6 2%, transparent 0%)`,
+              backgroundImage: `radial-linear(circle at 25px 25px, #06b6d4 2%, transparent 0%), radial-linear(circle at 75px 75px, #3b82f6 2%, transparent 0%)`,
               backgroundSize: "100px 100px",
             }}
           />
@@ -310,11 +291,11 @@ const Layout = ({ children }: LayoutProps) => {
               user ? (isSidebarCollapsed ? "md:ml-20" : "md:ml-72") : ""
             } w-full min-h-screen overflow-y-auto`}
           >
-            {/* Page header gradient */}
+            {/* Page header linear */}
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              className={`absolute top-0 left-0 right-0 h-64 bg-gradient-to-r ${
+              className={`absolute top-0 left-0 right-0 h-64 bg-linear-to-r ${
                 isAdminPage
                   ? "from-indigo-500/10 to-blue-500/5"
                   : isDriverPage
@@ -324,19 +305,7 @@ const Layout = ({ children }: LayoutProps) => {
             />
 
             {/* Main content container */}
-            <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`content-${location.pathname}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {children}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            <LayoutChildren>{children}</LayoutChildren>
 
             {/* Footer for main app */}
             {user && !isAdminPage && !isDriverPage && (
@@ -347,9 +316,9 @@ const Layout = ({ children }: LayoutProps) => {
                 className="mt-12 px-6 pb-6"
               >
                 <div className="max-w-7xl mx-auto">
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-6 bg-gradient-to-r from-white to-gray-50/80 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-sm">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-6 bg-linear-to-r from-white to-gray-50/80 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-sm">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
                         <Leaf className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -387,7 +356,7 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Progress indicator for page loading */}
         {isLoading && (
           <motion.div
-            className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 via-blue-500 to-indigo-500 z-50"
+            className="fixed top-0 left-0 right-0 h-1 bg-linear-to-r from-teal-500 via-blue-500 to-indigo-500 z-50"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{ duration: 0.3 }}

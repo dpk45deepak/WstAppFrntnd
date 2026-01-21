@@ -29,12 +29,10 @@ import {
   FileText,
   Upload,
   CreditCard,
-  Settings,
   Bell,
   Lock,
   ChevronRight,
   Globe,
-  BatteryCharging,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../../hooks/useToast";
@@ -43,7 +41,7 @@ import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const driverProfileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -205,13 +203,13 @@ const DriverProfilePage: React.FC = () => {
       <motion.span
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-green-100 to-teal-100 text-green-800"
+        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-linear-to-r from-green-100 to-teal-100 text-green-800"
       >
         <BadgeCheck className="w-3 h-3 mr-1" />
         Verified
       </motion.span>
     ) : (
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-linear-to-r from-amber-100 to-yellow-100 text-amber-800">
         <AlertCircle className="w-3 h-3 mr-1" />
         Pending
       </span>
@@ -225,19 +223,6 @@ const DriverProfilePage: React.FC = () => {
       transition: {
         staggerChildren: 0.1,
         delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
       },
     },
   };
@@ -289,7 +274,7 @@ const DriverProfilePage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setEditing(true)}
-              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all"
+              className="flex items-center gap-2 px-5 py-3 bg-linear-to-r from-teal-500 to-blue-500 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all"
             >
               <Edit2 className="w-5 h-5" />
               Edit Profile
@@ -313,7 +298,7 @@ const DriverProfilePage: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSubmit(onSubmit)}
                 disabled={!isDirty}
-                className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl font-bold shadow-lg hover:shadow-xl disabled:opacity-50"
+                className="flex items-center gap-2 px-5 py-3 bg-linear-to-r from-green-500 to-teal-500 text-white rounded-xl font-bold shadow-lg hover:shadow-xl disabled:opacity-50"
               >
                 <Save className="w-5 h-5" />
                 Save Changes
@@ -328,7 +313,7 @@ const DriverProfilePage: React.FC = () => {
         <motion.div
         // variants={itemVariants}
         className="lg:col-span-2">
-          <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="space-y-8">
               {/* Profile Header with Photo */}
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
@@ -337,7 +322,7 @@ const DriverProfilePage: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     className="relative group"
                   >
-                    <div className="w-32 h-32 bg-gradient-to-br from-teal-500 to-blue-500 rounded-2xl flex items-center justify-center overflow-hidden shadow-xl">
+                    <div className="w-32 h-32 bg-linear-to-br from-teal-500 to-blue-500 rounded-2xl flex items-center justify-center overflow-hidden shadow-xl">
                       {profilePhoto ? (
                         <img
                           src={profilePhoto}
@@ -377,7 +362,7 @@ const DriverProfilePage: React.FC = () => {
                       </h2>
                       <motion.div
                         whileHover={{ scale: 1.1 }}
-                        className="flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-teal-100 to-blue-100 text-teal-800 rounded-full text-sm font-bold"
+                        className="flex items-center gap-1 px-3 py-1 bg-linear-to-r from-teal-100 to-blue-100 text-teal-800 rounded-full text-sm font-bold"
                       >
                         <Sparkles className="w-3 h-3" />
                         Elite Driver
@@ -418,7 +403,7 @@ const DriverProfilePage: React.FC = () => {
 
                 {/* Verification Progress */}
                 <div className="w-full md:w-auto">
-                  <div className="p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl">
+                  <div className="p-4 bg-linear-to-r from-teal-50 to-blue-50 rounded-xl">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-bold text-gray-700">
                         Verification Progress
@@ -432,7 +417,7 @@ const DriverProfilePage: React.FC = () => {
                         initial={{ width: 0 }}
                         animate={{ width: `${verificationProgress}%` }}
                         transition={{ duration: 1 }}
-                        className="h-full bg-gradient-to-r from-teal-500 to-blue-500 rounded-full"
+                        className="h-full bg-linear-to-r from-teal-500 to-blue-500 rounded-full"
                       />
                     </div>
                     <p className="text-xs text-gray-600 mt-2">
@@ -453,7 +438,7 @@ const DriverProfilePage: React.FC = () => {
                   className="space-y-6"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-teal-500 to-blue-500 rounded-lg">
+                    <div className="p-2 bg-linear-to-br from-teal-500 to-blue-500 rounded-lg">
                       <User className="w-5 h-5 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">
@@ -507,7 +492,7 @@ const DriverProfilePage: React.FC = () => {
                   className="space-y-6"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg">
+                    <div className="p-2 bg-linear-to-br from-blue-500 to-indigo-500 rounded-lg">
                       <Truck className="w-5 h-5 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">
@@ -552,7 +537,7 @@ const DriverProfilePage: React.FC = () => {
                   className="space-y-6"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-indigo-500 to-rose-500 rounded-lg">
+                    <div className="p-2 bg-linear-to-br from-indigo-500 to-rose-500 rounded-lg">
                       <MapPin className="w-5 h-5 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">
@@ -621,7 +606,7 @@ const DriverProfilePage: React.FC = () => {
           <motion.div
           // variants={itemVariants}
           >
-            <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+            <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-gray-900">
                   Performance Stats
@@ -675,7 +660,7 @@ const DriverProfilePage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
-                          className={`p-2 rounded-lg bg-gradient-to-br ${stat.color}`}
+                          className={`p-2 rounded-lg bg-linear-to-br ${stat.color}`}
                         >
                           <div className="text-white">{stat.icon}</div>
                         </div>
@@ -694,7 +679,7 @@ const DriverProfilePage: React.FC = () => {
                           initial={{ width: 0 }}
                           animate={{ width: `${stat.progress}%` }}
                           transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
-                          className={`h-full rounded-full bg-gradient-to-r ${stat.color}`}
+                          className={`h-full rounded-full bg-linear-to-r ${stat.color}`}
                         />
                       </div>
                     )}
@@ -726,7 +711,7 @@ const DriverProfilePage: React.FC = () => {
           <motion.div
           // variants={itemVariants}
           transition={{ delay: 0.1 }}>
-            <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+            <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-gray-900">Weekly Goal</h3>
                 <Award className="w-5 h-5 text-amber-500" />
@@ -748,7 +733,7 @@ const DriverProfilePage: React.FC = () => {
                         width: `${stats ? (stats.currentWeekEarnings / stats.weeklyGoal) * 100 : 0}%`,
                       }}
                       transition={{ duration: 1 }}
-                      className="h-full bg-gradient-to-r from-teal-500 to-green-500 rounded-full"
+                      className="h-full bg-linear-to-r from-teal-500 to-green-500 rounded-full"
                     />
                   </div>
                   <div className="flex justify-between text-sm">
@@ -767,7 +752,7 @@ const DriverProfilePage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl">
+                <div className="p-3 bg-linear-to-r from-teal-50 to-blue-50 rounded-xl">
                   <p className="text-sm font-medium text-gray-900">
                     Keep it up!
                   </p>
@@ -783,7 +768,7 @@ const DriverProfilePage: React.FC = () => {
           <motion.div
           // variants={itemVariants}
           transition={{ delay: 0.2 }}>
-            <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+            <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-gray-900">Documents</h3>
                 <ShieldCheck className="w-5 h-5 text-blue-500" />
@@ -854,7 +839,7 @@ const DriverProfilePage: React.FC = () => {
           <motion.div
           // variants={itemVariants}
           transition={{ delay: 0.3 }}>
-            <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+            <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
               <h3 className="text-lg font-bold text-gray-900 mb-4">
                 Quick Actions
               </h3>

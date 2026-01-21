@@ -16,7 +16,6 @@ import {
   ChevronDown,
   Star,
   RefreshCw,
-  Eye,
   Printer,
   Share2,
   Zap,
@@ -24,7 +23,6 @@ import {
   Clock,
   Award,
   Sparkles,
-  Activity,
   ChevronRight,
 } from "lucide-react";
 import { useToast } from "../../hooks/useToast";
@@ -175,7 +173,7 @@ const ReportsPage: React.FC = () => {
       value: `$${animatedStats.revenue.toLocaleString()}`,
       icon: <DollarSign className="w-6 h-6" />,
       color: "from-green-500 to-teal-400",
-      bgColor: "bg-gradient-to-br from-green-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-green-50 via-white to-white",
       borderColor: "border-green-200",
       change: "+12.5%",
       trend: "up" as const,
@@ -186,7 +184,7 @@ const ReportsPage: React.FC = () => {
       value: animatedStats.pickups.toLocaleString(),
       icon: <Package className="w-6 h-6" />,
       color: "from-blue-500 to-indigo-400",
-      bgColor: "bg-gradient-to-br from-blue-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-blue-50 via-white to-white",
       borderColor: "border-blue-200",
       change: "+8.3%",
       trend: "up" as const,
@@ -197,7 +195,7 @@ const ReportsPage: React.FC = () => {
       value: animatedStats.users.toLocaleString(),
       icon: <Users className="w-6 h-6" />,
       color: "from-rose-500 to-purple-400",
-      bgColor: "bg-gradient-to-br from-rose-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-rose-50 via-white to-white",
       borderColor: "border-rose-200",
       change: "+15.2%",
       trend: "up" as const,
@@ -208,7 +206,7 @@ const ReportsPage: React.FC = () => {
       value: animatedStats.drivers.toLocaleString(),
       icon: <Truck className="w-6 h-6" />,
       color: "from-indigo-500 to-blue-400",
-      bgColor: "bg-gradient-to-br from-indigo-50 via-white to-white",
+      bgColor: "bg-linear-to-br from-indigo-50 via-white to-white",
       borderColor: "border-indigo-200",
       change: "+5.7%",
       trend: "up" as const,
@@ -250,19 +248,6 @@ const ReportsPage: React.FC = () => {
       transition: {
         staggerChildren: 0.1,
         delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
       },
     },
   };
@@ -327,7 +312,7 @@ const ReportsPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-xl font-medium shadow-lg"
+              className="flex items-center gap-2 px-4 py-3 bg-linear-to-r from-teal-500 to-blue-500 text-white rounded-xl font-medium shadow-lg"
             >
               <Filter className="w-4 h-4" />
               Export Options
@@ -398,7 +383,7 @@ const ReportsPage: React.FC = () => {
               <div className="relative z-10">
                 <div className="flex items-start justify-between mb-6">
                   <div
-                    className={`p-3 rounded-xl bg-gradient-to-br ${stat.color} shadow-md`}
+                    className={`p-3 rounded-xl bg-linear-to-br ${stat.color} shadow-md`}
                   >
                     {stat.icon}
                   </div>
@@ -427,13 +412,13 @@ const ReportsPage: React.FC = () => {
                 </div>
 
                 <motion.div
-                  className="h-1 w-full bg-gradient-to-r from-gray-200 to-gray-200 rounded-full mt-4 overflow-hidden"
+                  className="h-1 w-full bg-linear-to-r from-gray-200 to-gray-200 rounded-full mt-4 overflow-hidden"
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 1, delay: stat.delay }}
                 >
                   <div
-                    className={`h-full bg-gradient-to-r ${stat.color} rounded-full`}
+                    className={`h-full bg-linear-to-r ${stat.color} rounded-full`}
                   />
                 </motion.div>
               </div>
@@ -448,7 +433,7 @@ const ReportsPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+        <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
           <div className="flex flex-col md:flex-row gap-6">
             {/* Report Type Selector */}
             <div className="flex-1">
@@ -466,7 +451,7 @@ const ReportsPage: React.FC = () => {
                       flex items-center justify-center gap-3 px-4 py-4 rounded-xl font-medium transition-all duration-300
                       ${
                         reportType === type.id
-                          ? `bg-gradient-to-r ${type.color} text-white shadow-lg`
+                          ? `bg-linear-to-r ${type.color} text-white shadow-lg`
                           : "bg-white border-2 border-gray-200 text-gray-700 hover:border-teal-300 hover:bg-teal-50"
                       }
                     `}
@@ -533,7 +518,7 @@ const ReportsPage: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -573,7 +558,7 @@ const ReportsPage: React.FC = () => {
                   >
                     <div className="group relative">
                       <div
-                        className="w-8 bg-gradient-to-t from-blue-500 via-blue-400 to-teal-400 rounded-t-lg transition-all duration-300 group-hover:opacity-90 cursor-pointer"
+                        className="w-8 bg-linear-to-t from-blue-500 via-blue-400 to-teal-400 rounded-t-lg transition-all duration-300 group-hover:opacity-90 cursor-pointer"
                         style={{ height: `${height}%` }}
                       >
                         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap">
@@ -606,7 +591,7 @@ const ReportsPage: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Card className="h-full border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -635,28 +620,28 @@ const ReportsPage: React.FC = () => {
                     const percentage = total > 0 ? (count / total) * 100 : 0;
 
                     const typeColors: {
-                      [key: string]: { gradient: string; bg: string };
+                      [key: string]: { linear: string; bg: string };
                     } = {
                       general: {
-                        gradient: "from-blue-500 to-teal-400",
+                        linear: "from-blue-500 to-teal-400",
                         bg: "bg-blue-100",
                       },
                       recyclable: {
-                        gradient: "from-green-500 to-teal-400",
+                        linear: "from-green-500 to-teal-400",
                         bg: "bg-green-100",
                       },
                       hazardous: {
-                        gradient: "from-rose-500 to-indigo-400",
+                        linear: "from-rose-500 to-indigo-400",
                         bg: "bg-rose-100",
                       },
                       organic: {
-                        gradient: "from-amber-500 to-yellow-400",
+                        linear: "from-amber-500 to-yellow-400",
                         bg: "bg-amber-100",
                       },
                     };
 
                     const colors = typeColors[type] || {
-                      gradient: "from-gray-500 to-gray-400",
+                      linear: "from-gray-500 to-gray-400",
                       bg: "bg-gray-100",
                     };
 
@@ -671,7 +656,7 @@ const ReportsPage: React.FC = () => {
                         <div className="flex justify-between items-center">
                           <div className="flex items-center gap-3">
                             <div
-                              className={`w-3 h-3 rounded-full bg-gradient-to-r ${colors.gradient}`}
+                              className={`w-3 h-3 rounded-full bg-linear-to-r ${colors.linear}`}
                             />
                             <span className="font-medium capitalize text-gray-900">
                               {type}
@@ -689,7 +674,7 @@ const ReportsPage: React.FC = () => {
                               duration: 1,
                               delay: index * 0.1 + 0.3,
                             }}
-                            className={`h-full rounded-full bg-gradient-to-r ${colors.gradient}`}
+                            className={`h-full rounded-full bg-linear-to-r ${colors.linear}`}
                           />
                         </div>
                       </motion.div>
@@ -718,7 +703,7 @@ const ReportsPage: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="lg:col-span-2"
         >
-          <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+          <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -737,7 +722,7 @@ const ReportsPage: React.FC = () => {
             </div>
 
             <div className="overflow-hidden rounded-xl border border-gray-100">
-              <div className="grid grid-cols-5 gap-4 p-4 bg-gradient-to-r from-teal-50 to-blue-50 border-b border-gray-100">
+              <div className="grid grid-cols-5 gap-4 p-4 bg-linear-to-r from-teal-50 to-blue-50 border-b border-gray-100">
                 <div className="font-semibold text-gray-900">Driver</div>
                 <div className="font-semibold text-gray-900">Pickups</div>
                 <div className="font-semibold text-gray-900">Earnings</div>
@@ -755,7 +740,7 @@ const ReportsPage: React.FC = () => {
                     className="grid grid-cols-5 gap-4 p-4 hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-blue-400 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-linear-to-br from-indigo-500 to-blue-400 rounded-xl flex items-center justify-center">
                         <Truck className="w-5 h-5 text-white" />
                       </div>
                       <div>
@@ -793,7 +778,7 @@ const ReportsPage: React.FC = () => {
                       </span>
                     </div>
                     <div>
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-green-100 to-teal-100 text-green-800">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-linear-to-r from-green-100 to-teal-100 text-green-800">
                         <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
                         Active
                       </span>
@@ -825,7 +810,7 @@ const ReportsPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <Card className="border-2 border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
+        <Card className="border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-xl font-bold text-gray-900">
@@ -846,7 +831,7 @@ const ReportsPage: React.FC = () => {
                 metric: "45%",
                 icon: <Clock className="w-5 h-5" />,
                 color: "from-blue-500 to-teal-400",
-                bg: "bg-gradient-to-br from-blue-50 via-white to-white",
+                bg: "bg-linear-to-br from-blue-50 via-white to-white",
               },
               {
                 title: "Revenue Growth",
@@ -854,7 +839,7 @@ const ReportsPage: React.FC = () => {
                 metric: "+18%",
                 icon: <TrendingUp className="w-5 h-5" />,
                 color: "from-green-500 to-teal-400",
-                bg: "bg-gradient-to-br from-green-50 via-white to-white",
+                bg: "bg-linear-to-br from-green-50 via-white to-white",
               },
               {
                 title: "User Retention",
@@ -862,7 +847,7 @@ const ReportsPage: React.FC = () => {
                 metric: "92%",
                 icon: <Users className="w-5 h-5" />,
                 color: "from-rose-500 to-purple-400",
-                bg: "bg-gradient-to-br from-rose-50 via-white to-white",
+                bg: "bg-linear-to-br from-rose-50 via-white to-white",
               },
               {
                 title: "Eco Impact",
@@ -870,7 +855,7 @@ const ReportsPage: React.FC = () => {
                 metric: "125T",
                 icon: <Zap className="w-5 h-5" />,
                 color: "from-teal-500 to-green-400",
-                bg: "bg-gradient-to-br from-teal-50 via-white to-white",
+                bg: "bg-linear-to-br from-teal-50 via-white to-white",
               },
               {
                 title: "Service Quality",
@@ -878,7 +863,7 @@ const ReportsPage: React.FC = () => {
                 metric: "4.8",
                 icon: <Award className="w-5 h-5" />,
                 color: "from-amber-500 to-yellow-400",
-                bg: "bg-gradient-to-br from-amber-50 via-white to-white",
+                bg: "bg-linear-to-br from-amber-50 via-white to-white",
               },
               {
                 title: "Response Time",
@@ -886,7 +871,7 @@ const ReportsPage: React.FC = () => {
                 metric: "15min",
                 icon: <Target className="w-5 h-5" />,
                 color: "from-indigo-500 to-blue-400",
-                bg: "bg-gradient-to-br from-indigo-50 via-white to-white",
+                bg: "bg-linear-to-br from-indigo-50 via-white to-white",
               },
             ].map((insight, index) => (
               <motion.div
@@ -899,7 +884,7 @@ const ReportsPage: React.FC = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div
-                    className={`p-3 rounded-xl bg-gradient-to-br ${insight.color}`}
+                    className={`p-3 rounded-xl bg-linear-to-br ${insight.color}`}
                   >
                     {insight.icon}
                   </div>

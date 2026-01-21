@@ -19,9 +19,7 @@ import {
   Home,
   Package,
   Settings,
-  ChevronDown,
-  Sun,
-  Moon,
+  ChevronDown
 } from "lucide-react";
 import Button from "../common/Button";
 
@@ -32,7 +30,6 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [activeLink, setActiveLink] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
@@ -58,7 +55,7 @@ const Navbar = () => {
 
   const navLinks = [
     { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#how-it-works" },
+    { label: "How It Works", href: "how-it-works" },
     { label: "Pricing", href: "#pricing" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "Contact", href: "#contact" },
@@ -194,9 +191,9 @@ const Navbar = () => {
       exit={{ opacity: 0, y: 10 }}
       className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
     >
-      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-blue-50">
+      <div className="p-6 border-b border-gray-100 bg-linear-to-r from-teal-50 to-blue-50">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
             <User className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -231,7 +228,7 @@ const Navbar = () => {
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
               ${
                 activeLink === item.href
-                  ? `bg-gradient-to-r ${item.color} text-white`
+                  ? `bg-linear-to-r ${item.color} text-white`
                   : "text-gray-700 hover:bg-gray-50"
               }`}
           >
@@ -247,7 +244,7 @@ const Navbar = () => {
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium mt-2
               ${
                 activeLink === roleSpecificLinks.href
-                  ? `bg-gradient-to-r ${roleSpecificLinks.color} text-white`
+                  ? `bg-linear-to-r ${roleSpecificLinks.color} text-white`
                   : "text-gray-700 hover:bg-gray-50"
               }`}
           >
@@ -260,7 +257,7 @@ const Navbar = () => {
       <div className="p-4 border-t border-gray-100">
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-rose-50 to-rose-100 text-rose-700 rounded-xl font-medium hover:from-rose-100 hover:to-rose-200 transition-all"
+          className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-linear-to-r from-rose-50 to-rose-100 text-rose-700 rounded-xl font-medium hover:from-rose-100 hover:to-rose-200 transition-all"
         >
           <LogOut className="w-4 h-4" />
           Sign Out
@@ -275,10 +272,10 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", damping: 20 }}
-        className={`fixed w-full z-50 transition-all duration-300 ${
+        className={`fixed w-full z-50 transition-all duration-300 rounded-2xl ${
           scrolled
             ? "bg-white/95 backdrop-blur-xl border-b border-gray-200/50 shadow-2xl"
-            : "bg-gradient-to-b from-white/95 via-white/90 to-transparent backdrop-blur-lg"
+            : "bg-linear-to-b from-white/95 via-white/90 to-transparent backdrop-blur-lg"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -307,8 +304,8 @@ const Navbar = () => {
                   />
                 </motion.div>
                 <div className="flex flex-col">
-                  <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    EcoTrack
+                  <span className="text-2xl lg:text-3xl font-bold bg-linear-to-r from-teal-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    WstApp
                   </span>
                   <span className="text-xs text-gray-500 -mt-1">
                     Sustainable Waste Management
@@ -335,7 +332,7 @@ const Navbar = () => {
                     className="relative text-gray-600 hover:text-teal-600 transition-colors font-medium group"
                   >
                     {item.label}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
                   </motion.a>
                 ))}
 
@@ -345,7 +342,7 @@ const Navbar = () => {
                     to="/dashboard"
                     className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       activeLink === "/dashboard"
-                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg"
+                        ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg"
                         : "text-gray-700 hover:text-teal-600"
                     }`}
                   >
@@ -355,7 +352,7 @@ const Navbar = () => {
                     to="/pickups"
                     className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       activeLink === "/pickups"
-                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg"
+                        ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg"
                         : "text-gray-700 hover:text-teal-600"
                     }`}
                   >
@@ -366,7 +363,7 @@ const Navbar = () => {
                       to={roleSpecificLinks.href}
                       className={`px-4 py-2 rounded-xl font-medium transition-all ${
                         activeLink === roleSpecificLinks.href
-                          ? `bg-gradient-to-r ${roleSpecificLinks.color} text-white shadow-lg`
+                          ? `bg-linear-to-r ${roleSpecificLinks.color} text-white shadow-lg`
                           : "text-gray-700 hover:text-teal-600"
                       }`}
                     >
@@ -412,18 +409,6 @@ const Navbar = () => {
                 <Search className="w-5 h-5 text-gray-600" />
               </button>
 
-              {/* Dark Mode Toggle */}
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="hidden lg:flex p-2 hover:bg-gray-100 rounded-xl transition-colors"
-              >
-                {darkMode ? (
-                  <Sun className="w-5 h-5 text-yellow-500" />
-                ) : (
-                  <Moon className="w-5 h-5 text-gray-600" />
-                )}
-              </button>
-
               {!user ? (
                 <>
                   <Button
@@ -434,7 +419,7 @@ const Navbar = () => {
                     Login
                   </Button>
                   <Button
-                    className="group bg-gradient-to-r from-teal-500 to-blue-600 hover:from-blue-600 hover:to-teal-500 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="group bg-linear-to-r from-teal-500 to-blue-600 hover:from-blue-600 hover:to-teal-500 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                     onClick={() => navigate("/register")}
                   >
                     Get Started
@@ -471,7 +456,7 @@ const Navbar = () => {
                       onClick={() => setUserMenuOpen(!userMenuOpen)}
                       className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-xl transition-colors"
                     >
-                      <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
                         <User className="w-5 h-5 text-white" />
                       </div>
                       <div className="hidden lg:block text-left">
@@ -537,7 +522,7 @@ const Navbar = () => {
                         to={item.href}
                         className={`block px-4 py-3 rounded-xl text-base font-medium transition-all ${
                           activeLink === item.href
-                            ? `bg-gradient-to-r ${item.color} text-white`
+                            ? `bg-linear-to-r ${item.color} text-white`
                             : "text-gray-700 hover:bg-gray-50"
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
@@ -554,7 +539,7 @@ const Navbar = () => {
                         to={roleSpecificLinks.href}
                         className={`block px-4 py-3 rounded-xl text-base font-medium transition-all ${
                           activeLink === roleSpecificLinks.href
-                            ? `bg-gradient-to-r ${roleSpecificLinks.color} text-white`
+                            ? `bg-linear-to-r ${roleSpecificLinks.color} text-white`
                             : "text-gray-700 hover:bg-gray-50"
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
@@ -582,7 +567,7 @@ const Navbar = () => {
                         Login
                       </Button>
                       <Button
-                        className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white"
+                        className="w-full bg-linear-to-r from-teal-500 to-blue-600 text-white"
                         onClick={() => {
                           navigate("/register");
                           setMobileMenuOpen(false);
@@ -594,7 +579,7 @@ const Navbar = () => {
                   ) : (
                     <Button
                       variant="outline"
-                      className="w-full flex items-center justify-center bg-gradient-to-r from-rose-50 to-rose-100 text-rose-700 border-rose-200"
+                      className="w-full flex items-center justify-center bg-linear-to-r from-rose-50 to-rose-100 text-rose-700 border-rose-200"
                       onClick={() => {
                         handleLogout();
                         setMobileMenuOpen(false);

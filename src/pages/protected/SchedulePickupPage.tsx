@@ -58,7 +58,7 @@ const SchedulePickup = () => {
 
   return (
     <section
-      className="py-20 bg-gradient-to-b from-gray-50 to-white"
+      className="py-20 bg-linear-to-b from-gray-50 to-white"
       id="schedule"
     >
       <div className="container mx-auto px-4">
@@ -70,7 +70,7 @@ const SchedulePickup = () => {
               <span className="font-medium">Quick & Easy Scheduling</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
                 Schedule a Pickup
               </span>
               <br />
@@ -84,7 +84,7 @@ const SchedulePickup = () => {
               {/* Progress Line */}
               <div className="absolute top-5 left-0 right-0 h-1 bg-gray-200 -z-10">
                 <div
-                  className="h-full bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-500"
+                  className="h-full bg-linear-to-r from-teal-500 to-blue-500 transition-all duration-500"
                   style={{ width: `${((step - 1) / 3) * 100}%` }}
                 />
               </div>
@@ -95,7 +95,7 @@ const SchedulePickup = () => {
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-all duration-500 ${
                       step >= s.number
-                        ? "bg-gradient-to-r from-teal-500 to-blue-500 text-white scale-110 shadow-lg"
+                        ? "bg-linear-to-r from-teal-500 to-blue-500 text-white scale-110 shadow-lg"
                         : "bg-gray-100 text-gray-400"
                     }`}
                   >
@@ -145,7 +145,7 @@ const SchedulePickup = () => {
                     </div>
 
                     {/* Map Preview (Simulated) */}
-                    <div className="relative h-48 rounded-xl overflow-hidden bg-gradient-to-br from-teal-50 to-blue-50 border-2 border-dashed border-gray-300">
+                    <div className="relative h-48 rounded-xl overflow-hidden bg-linear-to-br from-teal-50 to-blue-50 border-2 border-dashed border-gray-300">
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
                           <div className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center mx-auto mb-4">
@@ -266,7 +266,7 @@ const SchedulePickup = () => {
                     </div>
 
                     {/* Schedule Preview */}
-                    <div className="bg-gradient-to-r from-teal-50 to-blue-50 rounded-2xl p-6">
+                    <div className="bg-linear-to-r from-teal-50 to-blue-50 rounded-2xl p-6">
                       <h3 className="text-xl font-bold mb-4 text-gray-800">
                         Your Pickup Schedule
                       </h3>
@@ -301,7 +301,7 @@ const SchedulePickup = () => {
                 {/* Step 4: Confirmation */}
                 {step === 4 && (
                   <div className="text-center space-y-8 animate-fadeIn">
-                    <div className="w-24 h-24 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full flex items-center justify-center mx-auto">
+                    <div className="w-24 h-24 bg-linear-to-r from-teal-500 to-blue-500 rounded-full flex items-center justify-center mx-auto">
                       <CheckCircle className="w-12 h-12 text-white" />
                     </div>
                     <div>
@@ -367,7 +367,7 @@ const SchedulePickup = () => {
 
                   <button
                     type="submit"
-                    className="group relative bg-gradient-to-r from-teal-500 to-blue-500 text-white px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="group relative bg-linear-to-r from-teal-500 to-blue-500 text-white px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <div className="flex items-center space-x-2">
                       <span>
