@@ -1,12 +1,13 @@
 // src/App.tsx
 import { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { useAuth } from './hooks/useAuth';
 // import { useToast } from './hooks/useToast';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import PublicRoute from './components/common/PublicRoute';
 import LoadingSpinner from './components/common/LoadingSpinner';
 import PageNotFound from './pages/public/PageNotFound';
 
@@ -54,7 +55,7 @@ const PageLoader = () => (
 
 // Route wrapper for authentication
 const AppRoutes = () => {
-  const { user, isLoading } = useAuth();
+  const { isLoading } = useAuth();
   // const { showToast } = useToast();
   // Log user info for debugging
   // console.log('User in AppRoutes:', user);
@@ -67,14 +68,14 @@ const AppRoutes = () => {
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
-      <Route path="/login" element={
-        user ? <Navigate to="/dashboard" replace /> : <LoginPage />
-      } />
-      <Route path="/register" element={
-        user ? <Navigate to="/dashboard" replace /> : <RegisterPage />
-      } />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+      
+      {/* Auth Routes - Restricted to non-authenticated users */}
+      <Route element={<PublicRoute restrictAuthenticated={true} />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+      </Route>
 
       {/* Protected Routes - Regular Users */}
       <Route element={<ProtectedRoute allowedRoles={['user', 'driver', 'admin']} />}>

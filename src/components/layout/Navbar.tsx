@@ -10,10 +10,7 @@ import {
   X,
   Bell,
   Search,
-  // Sparkles,
-  // Leaf,
   Calendar,
-  Recycle,
   Shield,
   Truck,
   Home,
@@ -22,6 +19,7 @@ import {
   ChevronDown
 } from "lucide-react";
 import Button from "../common/Button";
+import recycleIcon from "../../assets/icons8-recycle.svg";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -287,22 +285,7 @@ const Navbar = () => {
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <Link to="/" className="flex items-center gap-3">
-                <motion.div
-                  whileHover={{ rotate: 180 }}
-                  transition={{ duration: 0.5 }}
-                  className="relative"
-                >
-                  <Recycle className="h-10 w-10 text-teal-500" />
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                    className="absolute inset-0 border-2 border-teal-300/30 rounded-full"
-                  />
-                </motion.div>
+                <img src={recycleIcon} alt="Icon" />
                 <div className="flex flex-col">
                   <span className="text-2xl lg:text-3xl font-bold bg-linear-to-r from-teal-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
                     WstApp

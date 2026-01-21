@@ -24,6 +24,7 @@ import { Badge } from '../../components/ui/Badge';
 import HeroSection from '../../components/Landing_Page/HeroSection';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
+import PricingPlans from './PricingPlans';
 
 
 const WasteLandingPage: React.FC = () => {
@@ -365,6 +366,14 @@ const WasteLandingPage: React.FC = () => {
               ))}
             </div>
 
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mt-20"
+            >
+              <PricingPlans />
+            </motion.div>
             {/* Trust Indicators */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
