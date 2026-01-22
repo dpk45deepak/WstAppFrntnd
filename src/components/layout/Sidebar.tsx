@@ -1,4 +1,3 @@
-// src/components/layout/Sidebar.tsx
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
@@ -50,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   isMobileOpen,
   onClose,
 }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      
+
       // Auto-collapse on mobile
       if (mobile && !isCollapsed) {
         onToggleCollapse();
@@ -80,7 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [isCollapsed, onToggleCollapse]);
 
   useEffect(() => {
     // Close mobile sidebar when route changes
@@ -93,7 +92,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const sidebar = document.querySelector("aside");
-      const menuButton = document.querySelector('[aria-label="Toggle sidebar"]');
+      const menuButton = document.querySelector(
+        '[aria-label="Toggle sidebar"]',
+      );
 
       if (
         isMobile &&
@@ -283,7 +284,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
   ];
 
-  const getNavItems = () => {
+  const getNavItems = (): NavItem[] => {
     if (!user) return commonItems;
 
     switch (user.role) {
@@ -298,7 +299,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const navItems = getNavItems();
 
-  const NavItem = ({ item }: { item: (typeof navItems)[0] }) => {
+  const NavItem = ({ item }: { item: NavItem }) => {
     const isActive =
       location.pathname === item.to ||
       (item.to !== "/" && location.pathname.startsWith(item.to));
@@ -445,6 +446,19 @@ const Sidebar: React.FC<SidebarProps> = ({
     </motion.div>
   );
 
+  const isHomeOrHowItWorks =
+    location.pathname === "/" || location.pathname === "/how-it-works";
+
+  // Don't show sidebar on home page or how-it-works page, only show when authenticated
+  if (isAuthenticated && isHomeOrHowItWorks) {
+    return null;
+  }
+
+  // Also don't show sidebar if not authenticated at all
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <motion.aside
       initial={isMobile ? { x: -300 } : false}
@@ -525,7 +539,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         {!isCollapsed && (
           <p className="text-xs text-gray-500 text-center mt-3">
-            v2.1.4 • EcoTrack © 2024
+            v2.1.4 • EcoTrack © 2026
           </p>
         )}
       </div>

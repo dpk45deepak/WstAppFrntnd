@@ -68,7 +68,7 @@ const AppRoutes = () => {
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
-      
+
       {/* Auth Routes - Restricted to non-authenticated users */}
       <Route element={<PublicRoute restrictAuthenticated={true} />}>
         <Route path="/login" element={<LoginPage />} />

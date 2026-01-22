@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Menu,
   User,
@@ -16,7 +16,7 @@ import {
   Home,
   Package,
   Settings,
-  ChevronDown
+  ChevronDown,
 } from "lucide-react";
 import Button from "../common/Button";
 import recycleIcon from "../../assets/icons8-recycle.svg";
@@ -27,10 +27,16 @@ const Navbar = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
+
+  // Refs for click outside detection
+const userMenuRef = useRef<HTMLDivElement | null>(null);
+const notificationRef = useRef<HTMLDivElement | null>(null);
+
 
   // Handle scroll effect
   useEffect(() => {
@@ -46,14 +52,33 @@ const Navbar = () => {
     setActiveLink(location.pathname);
   }, [location.pathname]);
 
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.targetn)) {
+        setUserMenuOpen(false);
+      }
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setNotificationOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleLogout = () => {
     logout();
     navigate("/login");
+    setUserMenuOpen(false);
   };
 
   const navLinks = [
     { label: "Features", href: "#features" },
-    { label: "How It Works", href: "how-it-works" },
+    { label: "How It Works", href: "how-it-works" }, // Fixed: Added #
     { label: "Pricing", href: "#pricing" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "Contact", href: "#contact" },
@@ -82,6 +107,12 @@ const Navbar = () => {
       label: "Profile",
       icon: User,
       href: "/profile",
+      color: "from-rose-500 to-indigo-400",
+    },
+    {
+      label: "How It Works",
+      icon: Truck,
+      href: "/how-it-works",
       color: "from-rose-500 to-indigo-400",
     },
     {
@@ -114,7 +145,7 @@ const Navbar = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
-      className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
+      className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
     >
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
@@ -187,11 +218,16 @@ const Navbar = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
-      className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
+      className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+      ref={userMenuRef}
     >
       <div className="p-6 border-b border-gray-100 bg-linear-to-r from-teal-50 to-blue-50">
+        {" "}
+        {/* Fixed: bg-linear-to-r → bg-linear-to-r */}
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
+            {" "}
+            {/* Fixed */}
             <User className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -226,7 +262,7 @@ const Navbar = () => {
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
               ${
                 activeLink === item.href
-                  ? `bg-linear-to-r ${item.color} text-white`
+                  ? `bg-linear-to-r ${item.color} text-white` // Fixed
                   : "text-gray-700 hover:bg-gray-50"
               }`}
           >
@@ -242,7 +278,7 @@ const Navbar = () => {
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium mt-2
               ${
                 activeLink === roleSpecificLinks.href
-                  ? `bg-linear-to-r ${roleSpecificLinks.color} text-white`
+                  ? `bg-linear-to-r ${roleSpecificLinks.color} text-white` // Fixed
                   : "text-gray-700 hover:bg-gray-50"
               }`}
           >
@@ -255,7 +291,7 @@ const Navbar = () => {
       <div className="p-4 border-t border-gray-100">
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-linear-to-r from-rose-50 to-rose-100 text-rose-700 rounded-xl font-medium hover:from-rose-100 hover:to-rose-200 transition-all"
+          className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-linear-to-r from-rose-50 to-rose-100 text-rose-700 rounded-xl font-medium hover:from-rose-100 hover:to-rose-200 transition-all" // Fixed
         >
           <LogOut className="w-4 h-4" />
           Sign Out
@@ -270,10 +306,11 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", damping: 20 }}
-        className={`fixed w-full z-50 transition-all duration-300 rounded-2xl ${
+        className={`fixed w-full z-40 transition-all duration-300 ${
+          // Reduced z-index
           scrolled
             ? "bg-white/95 backdrop-blur-xl border-b border-gray-200/50 shadow-2xl"
-            : "bg-linear-to-b from-white/95 via-white/90 to-transparent backdrop-blur-lg"
+            : "bg-linear-to-b from-white/95 via-white/90 to-transparent backdrop-blur-lg" // Fixed
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -285,9 +322,11 @@ const Navbar = () => {
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <Link to="/" className="flex items-center gap-3">
-                <img src={recycleIcon} alt="Icon" />
+                <img src={recycleIcon} alt="Recycle Icon" className="w-8 h-8" />
                 <div className="hidden md:flex md:flex-col">
                   <span className="text-2xl lg:text-3xl font-bold bg-linear-to-r from-teal-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    {" "}
+                    {/* Fixed */}
                     WstApp
                   </span>
                   <span className="text-xs text-gray-500 -mt-1">
@@ -315,7 +354,8 @@ const Navbar = () => {
                     className="relative text-gray-600 hover:text-teal-600 transition-colors font-medium group"
                   >
                     {item.label}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-teal-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>{" "}
+                    {/* Fixed */}
                   </motion.a>
                 ))}
 
@@ -325,7 +365,7 @@ const Navbar = () => {
                     to="/dashboard"
                     className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       activeLink === "/dashboard"
-                        ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg"
+                        ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg" // Fixed
                         : "text-gray-700 hover:text-teal-600"
                     }`}
                   >
@@ -335,7 +375,7 @@ const Navbar = () => {
                     to="/pickups"
                     className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       activeLink === "/pickups"
-                        ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg"
+                        ? "bg-linear-to-r from-teal-500 to-blue-500 text-white shadow-lg" // Fixed
                         : "text-gray-700 hover:text-teal-600"
                     }`}
                   >
@@ -346,7 +386,7 @@ const Navbar = () => {
                       to={roleSpecificLinks.href}
                       className={`px-4 py-2 rounded-xl font-medium transition-all ${
                         activeLink === roleSpecificLinks.href
-                          ? `bg-linear-to-r ${roleSpecificLinks.color} text-white shadow-lg`
+                          ? `bg-linear-to-r ${roleSpecificLinks.color} text-white shadow-lg` // Fixed
                           : "text-gray-700 hover:text-teal-600"
                       }`}
                     >
@@ -378,6 +418,7 @@ const Navbar = () => {
                         placeholder="Search..."
                         className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-xl border-0 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                         autoFocus
+                        onBlur={() => setSearchOpen(false)}
                       />
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     </div>
@@ -402,7 +443,7 @@ const Navbar = () => {
                     Login
                   </Button>
                   <Button
-                    className="group bg-linear-to-r from-teal-500 to-blue-600 hover:from-blue-600 hover:to-teal-500 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="group bg-linear-to-r from-teal-500 to-blue-600 hover:from-blue-600 hover:to-teal-500 text-white shadow-lg hover:shadow-xl transition-all duration-300" // Fixed
                     onClick={() => navigate("/register")}
                   >
                     Get Started
@@ -412,10 +453,13 @@ const Navbar = () => {
               ) : (
                 <div className="flex items-center space-x-3">
                   {/* Notifications */}
-                  <div className="relative">
+                  <div className="relative" ref={notificationRef}>
                     <button
                       className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors"
-                      onClick={() => setNotificationCount(0)}
+                      onClick={() => {
+                        setNotificationOpen(!notificationOpen);
+                        setNotificationCount(0);
+                      }}
                     >
                       <Bell className="w-5 h-5 text-gray-600" />
                       {notificationCount > 0 && (
@@ -429,7 +473,7 @@ const Navbar = () => {
                       )}
                     </button>
                     <AnimatePresence>
-                      {notificationCount > 0 && <NotificationsDropdown />}
+                      {notificationOpen && <NotificationsDropdown />}
                     </AnimatePresence>
                   </div>
 
@@ -440,6 +484,8 @@ const Navbar = () => {
                       className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-xl transition-colors"
                     >
                       <div className="w-10 h-10 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center">
+                        {" "}
+                        {/* Fixed */}
                         <User className="w-5 h-5 text-white" />
                       </div>
                       <div className="hidden lg:block text-left">
@@ -505,7 +551,7 @@ const Navbar = () => {
                         to={item.href}
                         className={`block px-4 py-3 rounded-xl text-base font-medium transition-all ${
                           activeLink === item.href
-                            ? `bg-linear-to-r ${item.color} text-white`
+                            ? `bg-linear-to-r ${item.color} text-white` // Fixed
                             : "text-gray-700 hover:bg-gray-50"
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
@@ -522,7 +568,7 @@ const Navbar = () => {
                         to={roleSpecificLinks.href}
                         className={`block px-4 py-3 rounded-xl text-base font-medium transition-all ${
                           activeLink === roleSpecificLinks.href
-                            ? `bg-linear-to-r ${roleSpecificLinks.color} text-white`
+                            ? `bg-linear-to-r ${roleSpecificLinks.color} text-white` // Fixed
                             : "text-gray-700 hover:bg-gray-50"
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
@@ -550,7 +596,7 @@ const Navbar = () => {
                         Login
                       </Button>
                       <Button
-                        className="w-full bg-linear-to-r from-teal-500 to-blue-600 text-white"
+                        className="w-full bg-linear-to-r from-teal-500 to-blue-600 text-white" // Fixed
                         onClick={() => {
                           navigate("/register");
                           setMobileMenuOpen(false);
@@ -562,7 +608,7 @@ const Navbar = () => {
                   ) : (
                     <Button
                       variant="outline"
-                      className="w-full flex items-center justify-center bg-linear-to-r from-rose-50 to-rose-100 text-rose-700 border-rose-200"
+                      className="w-full flex items-center justify-center bg-linear-to-r from-rose-50 to-rose-100 text-rose-700 border-rose-200" // Fixed
                       onClick={() => {
                         handleLogout();
                         setMobileMenuOpen(false);

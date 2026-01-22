@@ -1,4 +1,3 @@
-// src/components/layout/Layout.tsx
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -21,6 +20,10 @@ const Layout = ({ children }: LayoutProps) => {
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
 
+  // Check if current page is home or how-it-works
+  const isHomeOrHowItWorks =
+    location.pathname === "/" || location.pathname === "/how-it-works";
+
   // Layout for auth pages (login, register)
   const isAuthPage = [
     "/login",
@@ -31,6 +34,9 @@ const Layout = ({ children }: LayoutProps) => {
 
   const isAdminPage = location.pathname.startsWith("/admin");
   const isDriverPage = location.pathname.startsWith("/driver");
+
+  // Determine if sidebar should be shown
+  const shouldShowSidebar = user && !isAuthPage && !isHomeOrHowItWorks;
 
   // Handle route changes with loading animation
   useEffect(() => {
@@ -48,7 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
     }
 
     return () => clearTimeout(timer);
-  }, [location.pathname, isAuthPage]);
+  }, [location.pathname, isAuthPage, isMobileOpen]);
 
   // Background linear based on user role and page
   const getBackgroundGradient = () => {
@@ -152,7 +158,6 @@ const Layout = ({ children }: LayoutProps) => {
 
           <motion.main
             key={location.pathname}
-            // variants={pageVariants}
             initial="initial"
             animate="animate"
             exit="exit"
@@ -196,7 +201,7 @@ const Layout = ({ children }: LayoutProps) => {
     <>
       <div className="min-h-screen bg-linear-to-br from-gray-50 to-white transition-all duration-500 relative overflow-x-hidden">
         {/* Floating action buttons for mobile */}
-        {user && (
+        {user && !isHomeOrHowItWorks && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -226,20 +231,22 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
 
         <div className="flex w-full min-h-screen relative">
-          {/* Desktop Sidebar */}
-          {user && (
+          {/* Desktop Sidebar - Only show when shouldShowSidebar is true */}
+          {shouldShowSidebar && (
             <div className="hidden md:block fixed inset-y-0 left-0 z-30">
               <Sidebar
                 isCollapsed={isSidebarCollapsed}
-                onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                onToggleCollapse={() =>
+                  setIsSidebarCollapsed(!isSidebarCollapsed)
+                }
                 isMobileOpen={isMobileOpen}
                 onClose={() => setIsMobileOpen(false)}
               />
             </div>
           )}
 
-          {/* Mobile Sidebar Toggle */}
-          {user && (
+          {/* Mobile Sidebar Toggle - Only show when shouldShowSidebar is true */}
+          {shouldShowSidebar && (
             <motion.button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               className="fixed bottom-6 left-6 z-50 p-3 rounded-full bg-white shadow-lg md:hidden"
@@ -252,9 +259,9 @@ const Layout = ({ children }: LayoutProps) => {
             </motion.button>
           )}
 
-          {/* Mobile Sidebar Overlay */}
+          {/* Mobile Sidebar Overlay - Only show when shouldShowSidebar is true */}
           <AnimatePresence>
-            {isMobileOpen && user && (
+            {isMobileOpen && shouldShowSidebar && (
               <>
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -283,12 +290,15 @@ const Layout = ({ children }: LayoutProps) => {
 
           <motion.main
             key={location.pathname}
-            // variants={pageVariants}
             initial="initial"
             animate="animate"
             exit="exit"
             className={`flex-1 relative transition-all duration-300 ${
-              user ? (isSidebarCollapsed ? "md:ml-20" : "md:ml-72") : ""
+              shouldShowSidebar
+                ? isSidebarCollapsed
+                  ? "md:ml-20"
+                  : "md:ml-72"
+                : ""
             } w-full min-h-screen overflow-y-auto`}
           >
             {/* Page header linear */}
@@ -299,16 +309,16 @@ const Layout = ({ children }: LayoutProps) => {
                 isAdminPage
                   ? "from-indigo-500/10 to-blue-500/5"
                   : isDriverPage
-                  ? "from-teal-500/10 to-blue-500/5"
-                  : "from-teal-500/10 via-blue-500/5 to-indigo-500/5"
+                    ? "from-teal-500/10 to-blue-500/5"
+                    : "from-teal-500/10 via-blue-500/5 to-indigo-500/5"
               } blur-3xl -z-10`}
             />
 
             {/* Main content container */}
             <LayoutChildren>{children}</LayoutChildren>
 
-            {/* Footer for main app */}
-            {user && !isAdminPage && !isDriverPage && (
+            {/* Footer for main app - Only show when user exists and not on admin/driver/home/how-it-works pages */}
+            {user && !isAdminPage && !isDriverPage && !isHomeOrHowItWorks && (
               <motion.footer
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://wstappbcknd.onrender.com/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 console.log("URL: ", API_BASE_URL);
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_BASE_URL!,
   headers: {
     'Content-Type': 'application/json',
   },
