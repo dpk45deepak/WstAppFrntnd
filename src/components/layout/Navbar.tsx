@@ -286,7 +286,7 @@ const Navbar = () => {
             >
               <Link to="/" className="flex items-center gap-3">
                 <img src={recycleIcon} alt="Icon" />
-                <div className="flex flex-col">
+                <div className="hidden md:flex md:flex-col">
                   <span className="text-2xl lg:text-3xl font-bold bg-linear-to-r from-teal-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
                     WstApp
                   </span>
