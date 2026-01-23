@@ -77,5 +77,19 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'),
+    function ({ addUtilities }) {
+      addUtilities({
+        '.no-scrollbar': {
+          /* Firefox */
+          'scrollbar-width': 'none',
+          /* IE and Edge */
+          '-ms-overflow-style': 'none',
+        },
+        '.no-scrollbar::-webkit-scrollbar': {
+          display: 'none',
+        },
+      });
+    },
+  ],
 };

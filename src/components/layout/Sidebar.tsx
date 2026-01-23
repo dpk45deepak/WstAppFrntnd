@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   Home,
@@ -23,6 +23,8 @@ import {
   Map,
   FileText,
   HelpCircle,
+  Menu,
+  X,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../../hooks/useToast";
@@ -33,6 +35,7 @@ interface SidebarProps {
   onToggleCollapse: () => void;
   isMobileOpen: boolean;
   onClose: () => void;
+  onMobileToggle: () => void;
 }
 
 interface NavItem {
@@ -43,11 +46,31 @@ interface NavItem {
   badge: number | null;
 }
 
+// Mobile menu button (exported for use in parent components)
+export const MobileMenuButton: React.FC<{
+  isMobileOpen: boolean;
+  onMobileToggle: () => void;
+}> = ({ isMobileOpen, onMobileToggle }) => (
+  <motion.button
+    onClick={onMobileToggle}
+    className="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+    whileTap={{ scale: 0.9 }}
+    aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+  >
+    {isMobileOpen ? (
+      <X className="w-6 h-6 text-gray-700" />
+    ) : (
+      <Menu className="w-6 h-6 text-gray-700" />
+    )}
+  </motion.button>
+);
+
 const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed,
   onToggleCollapse,
   isMobileOpen,
   onClose,
+  // onMobileToggle,
 }) => {
   const { user, logout, isAuthenticated } = useAuth();
   const { showToast } = useToast();
@@ -56,6 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [_, setActiveHover] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [unreadNotifications] = useState(5);
+  const sidebarRef = useRef<HTMLElement>(null);
 
   // Handle window resize for mobile detection
   useEffect(() => {
@@ -66,6 +90,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       // Auto-collapse on mobile
       if (mobile && !isCollapsed) {
         onToggleCollapse();
+      }
+
+      // Close mobile sidebar when resizing to desktop
+      if (!mobile && isMobileOpen) {
+        onClose();
       }
     };
 
@@ -79,10 +108,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [isCollapsed, onToggleCollapse]);
+  }, [isCollapsed, onToggleCollapse, isMobileOpen, onClose]);
 
+  // Close sidebar when route changes on mobile
   useEffect(() => {
-    // Close mobile sidebar when route changes
     if (isMobile && onClose && isMobileOpen) {
       onClose();
     }
@@ -91,19 +120,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const sidebar = document.querySelector("aside");
-      const menuButton = document.querySelector(
-        '[aria-label="Toggle sidebar"]',
-      );
-
       if (
         isMobile &&
         isMobileOpen &&
-        sidebar &&
-        !sidebar.contains(event.target as Node) &&
-        menuButton &&
-        !menuButton.contains(event.target as Node) &&
-        onClose
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
       ) {
         onClose();
       }
@@ -111,11 +132,28 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     if (isMobile && isMobileOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside as any);
+      // Prevent body scroll when sidebar is open on mobile
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside as any);
+      document.body.style.overflow = "auto";
     };
+  }, [isMobile, isMobileOpen, onClose]);
+
+  // Add escape key listener
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMobile && isMobileOpen) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isMobile, isMobileOpen, onClose]);
 
   const handleLogout = async () => {
@@ -307,63 +345,77 @@ const Sidebar: React.FC<SidebarProps> = ({
     return (
       <motion.div
         whileHover={{ x: 4 }}
+        whileTap={{ scale: 0.98 }}
         onHoverStart={() => setActiveHover(item.label)}
         onHoverEnd={() => setActiveHover(null)}
       >
         <NavLink
           to={item.to}
           onClick={() => {
-            if (isMobile && onClose) {
-              onClose();
-            }
+            if (isMobile && onClose) onClose();
           }}
           className={`
-            relative flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300
-            ${isCollapsed ? "justify-center px-3 py-4" : ""}
+            relative flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 overflow-hidden
+            ${isCollapsed && !isMobile ? "justify-center px-3 py-4" : ""}
             ${
               isActive
                 ? `bg-linear-to-r ${item.color} text-white shadow-lg`
                 : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:shadow-md"
             }
+            ${isMobile ? "py-4" : ""}
           `}
         >
-          {isActive && !isCollapsed && (
+          {/* Active indicator */}
+          {isActive && !isCollapsed && !isMobile && (
             <motion.div
               layoutId="activeTab"
-              className="absolute left-0 w-1 h-8 rounded-r-full bg-white"
+              className="absolute left-0 w-1 h-8 rounded-r-full bg-white z-20"
               initial={false}
             />
           )}
 
-          <div className={`relative ${isCollapsed ? "" : "mr-3"}`}>
-            <item.icon className="w-5 h-5" />
-            {item.badge && item.badge > 0 && (
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="absolute -top-2 -right-2 w-5 h-5 bg-rose-500 text-white text-xs rounded-full flex items-center justify-center"
-              >
-                {item.badge}
-              </motion.span>
+          {/* Content */}
+          <div className="relative z-10 flex items-center w-full">
+            <div
+              className={`relative ${isCollapsed && !isMobile ? "" : "mr-3"}`}
+            >
+              <item.icon
+                className={`w-5 h-5 ${isActive ? "text-white" : ""} ${isMobile ? "w-6 h-6" : ""}`}
+              />
+
+              {item.badge && item.badge > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-2 -right-2 w-5 h-5 bg-rose-500 text-white text-xs rounded-full flex items-center justify-center border-2 border-white"
+                >
+                  {item.badge > 9 ? "9+" : item.badge}
+                </motion.span>
+              )}
+            </div>
+
+            {(!isCollapsed || isMobile) && (
+              <>
+                <span
+                  className={`flex-1 font-medium ${isActive ? "text-white" : ""} ${isMobile ? "text-base" : ""}`}
+                >
+                  {item.label}
+                </span>
+                <ChevronRight
+                  className={`w-4 h-4 transition-transform ${isMobile ? "w-5 h-5" : ""} ${
+                    isActive ? "rotate-90 text-white" : ""
+                  }`}
+                />
+              </>
             )}
           </div>
 
-          {!isCollapsed && (
-            <>
-              <span className="flex-1 font-medium">{item.label}</span>
-              <ChevronRight
-                className={`w-4 h-4 transition-transform ${
-                  isActive ? "rotate-90" : ""
-                }`}
-              />
-            </>
-          )}
-
-          {isActive && !isCollapsed && (
+          {/* Glass overlay behind text */}
+          {isActive && (!isCollapsed || isMobile) && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute inset-0 rounded-xl bg-white/10 backdrop-blur-sm"
+              className="absolute inset-0 rounded-xl bg-white/10 backdrop-blur-sm z-0 pointer-events-none"
             />
           )}
         </NavLink>
@@ -376,16 +428,17 @@ const Sidebar: React.FC<SidebarProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={`p-4 border-b border-gray-100 ${
-        isCollapsed ? "text-center" : ""
+        isCollapsed && !isMobile ? "text-center" : ""
       }`}
     >
       <div
         className={`flex items-center ${
-          isCollapsed ? "justify-center" : "space-x-3"
+          isCollapsed && !isMobile ? "justify-center" : "space-x-3"
         }`}
       >
         <motion.div
           whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.95 }}
           className="relative shrink-0"
         >
           <div className="w-12 h-12 bg-linear-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -394,7 +447,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white" />
         </motion.div>
 
-        {!isCollapsed && (
+        {(!isCollapsed || isMobile) && (
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -406,6 +459,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <p className="text-xs text-gray-500 truncate">{user?.email}</p>
             <motion.div
               whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               className="inline-flex items-center mt-2 px-2 py-1 rounded-lg bg-linear-to-r from-teal-50 to-blue-50 text-teal-700 text-xs font-bold"
             >
               {user?.role === "admin" && <Shield className="w-3 h-3 mr-1" />}
@@ -421,7 +475,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const Logo = () => (
     <motion.div className="flex items-center" whileHover={{ scale: 1.05 }}>
-      {!isCollapsed ? (
+      {!isCollapsed || isMobile ? (
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -431,7 +485,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <Recycle className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">EcoTrack</h1>
+            <h1 className="text-xl font-bold text-gray-900">WstApp</h1>
             <p className="text-xs text-gray-500">Waste Management</p>
           </div>
         </motion.div>
@@ -459,45 +513,122 @@ const Sidebar: React.FC<SidebarProps> = ({
     return null;
   }
 
+  // Backdrop for mobile
+  if (isMobile && isMobileOpen) {
+    return (
+      <>
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+        />
+
+        {/* Sidebar */}
+        <motion.aside
+          ref={sidebarRef}
+          initial={{ x: -300 }}
+          animate={{ x: 0 }}
+          exit={{ x: -300 }}
+          transition={{
+            type: "tween",
+            ease: [0.4, 0, 0.2, 1],
+            duration: 0.3,
+          }}
+          className="fixed h-screen bg-white shadow-2xl z-50 w-72 border-r border-gray-100 overflow-hidden flex flex-col"
+        >
+          {/* Mobile header with close button */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-100">
+            <Logo />
+            <motion.button
+              onClick={onClose}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="Close sidebar"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </motion.button>
+          </div>
+
+          {/* User info */}
+          {user && <UserInfo />}
+
+          {/* Navigation */}
+          <nav className="flex-1 p-4 space-y-2 overflow-y-auto no-scrollbar">
+            <AnimatePresence>
+              {navItems.map((item, index) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <NavItem item={item} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </nav>
+
+          {/* Logout button */}
+          <div className="p-4 border-t border-gray-100">
+            <motion.button
+              onClick={handleLogout}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.95 }}
+              className={`
+                flex items-center w-full px-4 py-3 text-base font-bold
+                rounded-xl transition-all duration-300
+                bg-linear-to-r from-rose-50 to-rose-100 text-rose-700
+                hover:from-rose-100 hover:to-rose-200 hover:shadow-md
+              `}
+            >
+              <LogOut className="w-5 h-5 mr-3" />
+              Logout
+            </motion.button>
+            <p className="text-xs text-gray-500 text-center mt-3">
+              v2.1.4 • WstApp © 2026
+            </p>
+          </div>
+        </motion.aside>
+      </>
+    );
+  }
+
+  // Desktop sidebar - returns just the sidebar, NOT the MobileMenuButton
   return (
     <motion.aside
-      initial={isMobile ? { x: -300 } : false}
-      animate={
-        isMobile
-          ? { x: isMobileOpen ? 0 : -300, width: "18rem" }
-          : { width: isCollapsed ? "5rem" : "18rem" }
-      }
-      exit={{ x: -300 }}
+      ref={sidebarRef}
+      initial={false}
+      animate={{
+        width: isCollapsed ? "5rem" : "18rem",
+      }}
       transition={{
         type: "tween",
         ease: [0.4, 0, 0.2, 1],
         duration: 0.3,
       }}
-      className={`
-        fixed md:relative h-screen bg-white shadow-lg z-40
-        ${isCollapsed ? "w-20" : "w-72"}
-        border-r border-gray-100 overflow-hidden flex flex-col
-      `}
+      className="hidden md:flex h-screen bg-white shadow-lg z-40 border-r border-gray-100 overflow-hidden flex-col"
     >
       {/* Header with Logo and Toggle */}
       <div className="flex items-center justify-between p-6 border-b border-gray-100">
         <Logo />
 
-        {!isMobile && (
-          <motion.button
-            onClick={onToggleCollapse}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {isCollapsed ? (
-              <ChevronRight className="w-5 h-5 text-gray-600" />
-            ) : (
-              <ChevronLeft className="w-5 h-5 text-gray-600" />
-            )}
-          </motion.button>
-        )}
+        <motion.button
+          onClick={onToggleCollapse}
+          className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {isCollapsed ? (
+            <ChevronRight className="w-5 h-5 text-gray-600" />
+          ) : (
+            <ChevronLeft className="w-5 h-5 text-gray-600" />
+          )}
+        </motion.button>
       </div>
 
       {/* User info */}
@@ -505,7 +636,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {navItems.map((item, index) => (
             <motion.div
               key={item.label}
@@ -526,12 +657,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className={`
-            flex items-center w-full px-4 py-3 text-sm font-bold
-            rounded-xl transition-all duration-300
-            ${isCollapsed ? "justify-center px-3 py-4" : ""}
-            bg-linear-to-r from-rose-50 to-rose-100 text-rose-700
-            hover:from-rose-100 hover:to-rose-200 hover:shadow-md
-          `}
+              flex items-center w-full px-4 py-3 text-sm font-bold
+              rounded-xl transition-all duration-300
+              ${isCollapsed ? "justify-center px-3 py-4" : ""}
+              bg-linear-to-r from-rose-50 to-rose-100 text-rose-700
+              hover:from-rose-100 hover:to-rose-200 hover:shadow-md
+            `}
         >
           <LogOut className={`w-5 h-5 ${isCollapsed ? "" : "mr-3"}`} />
           {!isCollapsed && "Logout"}
@@ -539,7 +670,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         {!isCollapsed && (
           <p className="text-xs text-gray-500 text-center mt-3">
-            v2.1.4 • EcoTrack © 2026
+            v2.1.4 • WstApp © 2026
           </p>
         )}
       </div>
@@ -547,4 +678,5 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 };
 
+// Note: Don't export MobileMenuButton here again - it's already exported at the top
 export default Sidebar;

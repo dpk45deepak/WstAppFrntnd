@@ -754,12 +754,12 @@ const DriverPickupsPage: React.FC = () => {
                 {/* Waste Type & Customer */}
                 <div className="flex items-center mb-4">
                   <div
-                    className={`w-12 h-12 rounded-xl ${wasteType.bg} flex items-center justify-center mr-3`}
+                    className={`w-12 h-12 rounded-xl ${wasteType?.bg} flex items-center justify-center mr-3`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-lg ${wasteType.color} flex items-center justify-center text-white`}
+                      className={`w-8 h-8 rounded-lg ${wasteType?.color} flex items-center justify-center text-white`}
                     >
-                      {wasteType.icon}
+                      {wasteType?.icon}
                     </div>
                   </div>
                   <div>
@@ -882,12 +882,12 @@ const DriverPickupsPage: React.FC = () => {
                     <div className="flex-1">
                       <div className="flex items-start mb-4">
                         <div
-                          className={`w-12 h-12 rounded-xl ${wasteType.bg} flex items-center justify-center mr-4`}
+                          className={`w-12 h-12 rounded-xl ${wasteType?.bg} flex items-center justify-center mr-4`}
                         >
                           <div
-                            className={`w-8 h-8 rounded-lg ${wasteType.color} flex items-center justify-center text-white`}
+                            className={`w-8 h-8 rounded-lg ${wasteType?.color} flex items-center justify-center text-white`}
                           >
-                            {wasteType.icon}
+                            {wasteType?.icon}
                           </div>
                         </div>
                         <div className="flex-1">

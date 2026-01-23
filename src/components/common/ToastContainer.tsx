@@ -72,7 +72,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onHide }) => {
       aria-atomic="true"
     >
       <div className="flex items-start">
-        <div className={`flex-shrink-0 ${config.iconColor}`}>
+        <div className={`shrink-0 ${config.iconColor}`}>
           {config.icon}
         </div>
         
@@ -105,7 +105,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onHide }) => {
         <button
           type="button"
           className={`
-            ml-4 flex-shrink-0 rounded-md p-1 transition-colors
+            ml-4 shrink-0 rounded-md p-1 transition-colors
             ${config.iconColor} hover:opacity-75
             focus:outline-none focus:ring-2 focus:ring-offset-2
             ${config.ringColor}

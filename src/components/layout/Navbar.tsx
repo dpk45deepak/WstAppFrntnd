@@ -508,7 +508,7 @@ const notificationRef = useRef<HTMLDivElement | null>(null);
 
               {/* Mobile Menu Button */}
               <button
-                className="lg:hidden ml-2 p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                className="lg:hidden ml-2 p-2 hover:bg-gray-100 rounded-xl transition-colors top-0"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? (

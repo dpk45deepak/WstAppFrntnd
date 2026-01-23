@@ -346,20 +346,22 @@ const DriverDashboardPage: React.FC = () => {
         className="flex flex-col lg:flex-row lg:items-center justify-between gap-6"
       >
         <div className="space-y-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4 p-5 rounded-2xl bg-linear-to-r from-teal-500 via-blue-400 to-indigo-500 shadow-lg">
             <motion.div
               animate={{ rotate: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 3 }}
+              transition={{ repeat: 1, duration: 3 }}
+              className="bg-white/20 backdrop-blur-md p-3 rounded-xl"
             >
-              <Truck className="w-8 h-8 text-teal-600" />
+              <Truck className="w-8 h-8 text-white drop-shadow-md" />
             </motion.div>
+
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-white tracking-wide">
                 Driver Dashboard
               </h1>
-              <p className="text-gray-600">
+              <p className="text-white/90">
                 Welcome back,{" "}
-                <span className="font-semibold text-teal-600">
+                <span className="font-semibold text-white underline decoration-white/40">
                   {user?.name}
                 </span>
                 . Ready for your next pickup?
@@ -911,72 +913,175 @@ const DriverDashboardPage: React.FC = () => {
 
         {/* Earnings Preview */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+          whileHover={{ y: -2 }}
+          className="group"
         >
-          <Card className="h-full border-2 border-gray-100 bg-linear-to-b from-white to-gray-50/50">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  Earnings Preview
-                </h2>
-                <p className="text-gray-600">This week's projected earnings</p>
-              </div>
-              <DollarSign className="w-6 h-6 text-green-500" />
-            </div>
+          <Card className="h-full border border-gray-200/80 bg-linear-to-br from-white via-white to-gray-50/50 shadow-lg shadow-gray-100/50 overflow-hidden backdrop-blur-sm">
+            {/* Header Section */}
+            <div className="relative p-6 pb-0">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-teal-100/20 to-green-100/20 rounded-full -translate-y-16 translate-x-8" />
 
-            <div className="space-y-6">
-              <div className="flex items-center justify-between p-4 bg-linear-to-r from-green-50 to-teal-50 rounded-xl">
+              <div className="flex items-start justify-between relative z-10">
                 <div>
-                  <p className="text-sm text-gray-600">Today's Earnings</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    ${animatedStats.todayEarnings.toFixed(2)}
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-2 h-2 bg-linear-to-r from-teal-500 to-green-500 rounded-full animate-pulse" />
+                    <p className="text-sm font-medium text-teal-600 uppercase tracking-wider">
+                      This Week
+                    </p>
+                  </div>
+                  <h2 className="text-2xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                    Earnings Preview
+                  </h2>
+                  <p className="text-gray-500 mt-1">
+                    Projected earnings for the week ahead
                   </p>
                 </div>
-                <TrendingUp className="w-8 h-8 text-green-500" />
-              </div>
 
+                <div className="relative">
+                  <div className="absolute inset-0 bg-linear-to-r from-teal-400 to-green-400 rounded-xl blur opacity-20 group-hover:opacity-30 transition-opacity" />
+                  <div className="relative bg-linear-to-br from-white to-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm">
+                    <DollarSign className="w-7 h-7 bg-linear-to-r from-teal-500 to-green-500 bg-clip-text text-green-700" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="p-6 space-y-6">
+              {/* Today's Earnings Card */}
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                className="relative overflow-hidden group/card"
+              >
+                <div className="absolute inset-0 bg-linear-to-r from-teal-500/5 to-green-500/5 group-hover/card:from-teal-500/10 group-hover/card:to-green-500/10 transition-all duration-300" />
+                <div className="relative p-5 bg-linear-to-r from-white to-gray-50/50 border border-teal-100/50 rounded-2xl shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">
+                        Today's Earnings
+                      </p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-3xl font-bold bg-linear-to-r from-gray-900 to-gray-800 bg-clip-text text-transparent">
+                          ${animatedStats.todayEarnings.toFixed(2)}
+                        </span>
+                        <motion.span
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.8 }}
+                          className="text-sm font-medium px-2 py-0.5 bg-linear-to-r from-teal-100 to-green-100 text-teal-700 rounded-full"
+                        >
+                          +12.5%
+                        </motion.span>
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-linear-to-r from-teal-400 to-green-400 rounded-full blur opacity-30" />
+                      <TrendingUp className="relative w-10 h-10 p-2 bg-linear-to-r from-teal-500 to-green-500 text-white rounded-full shadow-lg" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Progress Section */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Weekly Goal</span>
-                  <span className="font-bold text-gray-900">$500</span>
+                  <div>
+                    <span className="text-gray-700 font-medium">
+                      Weekly Goal
+                    </span>
+                    <span className="ml-2 text-sm text-gray-500">
+                      ($500 target)
+                    </span>
+                  </div>
+                  <span className="font-bold text-gray-900 text-lg">$500</span>
                 </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{
-                      width: `${(animatedStats.todayEarnings / 500) * 100}%`,
-                    }}
-                    transition={{ duration: 1, delay: 0.8 }}
-                    className="h-full bg-linear-to-r from-teal-500 to-green-500 rounded-full"
-                  />
-                </div>
-                <div className="text-sm text-gray-500 text-center">
-                  {((animatedStats.todayEarnings / 500) * 100).toFixed(1)}%
-                  completed
+
+                <div className="relative">
+                  <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{
+                        width: `${Math.min((animatedStats.todayEarnings / 500) * 100, 100)}%`,
+                      }}
+                      transition={{
+                        duration: 1.2,
+                        delay: 0.7,
+                        ease: "easeOut",
+                      }}
+                      className="h-full bg-linear-to-r from-teal-400 via-teal-500 to-green-500 rounded-full relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                    </motion.div>
+                  </div>
+                  <div className="mt-2 flex justify-between items-center">
+                    <span className="text-sm font-medium text-teal-600">
+                      {((animatedStats.todayEarnings / 500) * 100).toFixed(1)}%
+                      completed
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      ${animatedStats.todayEarnings.toFixed(0)} / $500
+                    </span>
+                  </div>
                 </div>
               </div>
 
+              {/* Stats Grid */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-3 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-600">Avg. per Pickup</p>
-                  <p className="font-bold text-gray-900">$24.50</p>
-                </div>
-                <div className="p-3 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-600">Best Day</p>
-                  <p className="font-bold text-gray-900">$186.75</p>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.9 }}
+                  className="p-4 bg-linear-to-br from-gray-50 to-white border border-gray-100 rounded-xl hover:border-teal-100 transition-colors group/stat"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-1.5 h-1.5 bg-teal-400 rounded-full" />
+                    <p className="text-sm text-gray-600">Avg. per Pickup</p>
+                  </div>
+                  <p className="font-bold text-gray-900 text-xl">$24.50</p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1 }}
+                  className="p-4 bg-linear-to-br from-gray-50 to-white border border-gray-100 rounded-xl hover:border-green-100 transition-colors group/stat"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-1.5 h-1.5 bg-green-400 rounded-full" />
+                    <p className="text-sm text-gray-600">Best Day</p>
+                  </div>
+                  <p className="font-bold text-gray-900 text-xl">$186.75</p>
+                </motion.div>
               </div>
 
-              <Button
-                variant="outline"
-                className="w-full border-teal-200 text-teal-700 hover:border-teal-500"
-                onClick={() => (window.location.href = "/driver/earnings")}
+              {/* Action Button */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1 }}
               >
-                View Detailed Earnings
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </Button>
+                <Button
+                  variant="outline"
+                  className="w-full group/btn border border-gray-200 bg-linear-to-r from-white to-gray-50 hover:from-teal-50 hover:to-green-50 hover:border-teal-300 text-gray-800 hover:text-gray-900 shadow-sm hover:shadow-md transition-all duration-300"
+                  onClick={() => (window.location.href = "/driver/earnings")}
+                >
+                  <span className="flex items-center justify-center">
+                    View Detailed Earnings
+                    <motion.div
+                      initial={{ x: 0 }}
+                      whileHover={{ x: 3 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <ChevronRight className="w-4 h-4 ml-2 group-hover/btn:text-teal-600 transition-colors" />
+                    </motion.div>
+                  </span>
+                </Button>
+              </motion.div>
             </div>
           </Card>
         </motion.div>

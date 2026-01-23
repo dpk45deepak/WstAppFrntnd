@@ -2,10 +2,10 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ToastContainer from "../common/ToastContainer";
-import Sidebar from "./Sidebar";
+import Sidebar, { MobileMenuButton } from "./Sidebar";
 import { useAuth } from "../../hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import { Leaf, Sparkles, Waves, Recycle, Menu } from "lucide-react";
+import { Leaf, Sparkles, Waves, Recycle } from "lucide-react";
 import LayoutChildren from "./Children";
 
 interface LayoutProps {
@@ -200,25 +200,6 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <div className="min-h-screen bg-linear-to-br from-gray-50 to-white transition-all duration-500 relative overflow-x-hidden">
-        {/* Floating action buttons for mobile */}
-        {user && !isHomeOrHowItWorks && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="fixed bottom-6 right-6 md:hidden z-40"
-          >
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-14 h-14 bg-linear-to-br from-teal-500 to-blue-500 text-white rounded-full shadow-xl flex items-center justify-center"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              aria-label="Scroll to top"
-            >
-              <Sparkles className="w-6 h-6" />
-            </motion.button>
-          </motion.div>
-        )}
-
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div
@@ -231,9 +212,9 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
 
         <div className="flex w-full min-h-screen relative">
-          {/* Desktop Sidebar - Only show when shouldShowSidebar is true */}
+          {/* Sidebar (mounted on all sizes so mobile menu can open it) */}
           {shouldShowSidebar && (
-            <div className="hidden md:block fixed inset-y-0 left-0 z-30">
+            <div className="fixed inset-y-0 left-0 z-30">
               <Sidebar
                 isCollapsed={isSidebarCollapsed}
                 onToggleCollapse={() =>
@@ -241,77 +222,74 @@ const Layout = ({ children }: LayoutProps) => {
                 }
                 isMobileOpen={isMobileOpen}
                 onClose={() => setIsMobileOpen(false)}
+                onMobileToggle={() => setIsMobileOpen(!isMobileOpen)}
               />
             </div>
           )}
-
-          {/* Mobile Sidebar Toggle - Only show when shouldShowSidebar is true */}
-          {shouldShowSidebar && (
-            <motion.button
-              onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="fixed bottom-6 left-6 z-50 p-3 rounded-full bg-white shadow-lg md:hidden"
-              aria-label="Toggle sidebar"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Menu className="w-6 h-6 text-gray-700" />
-            </motion.button>
-          )}
-
-          {/* Mobile Sidebar Overlay - Only show when shouldShowSidebar is true */}
-          <AnimatePresence>
-            {isMobileOpen && shouldShowSidebar && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={() => setIsMobileOpen(false)}
-                  className="fixed inset-0 bg-black/50 z-40 md:hidden"
-                />
-                <motion.div
-                  initial={{ x: -300 }}
-                  animate={{ x: 0 }}
-                  exit={{ x: -300 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  className="fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-lg overflow-y-auto"
-                >
-                  <Sidebar
-                    isCollapsed={false}
-                    onToggleCollapse={() => {}}
-                    isMobileOpen={isMobileOpen}
-                    onClose={() => setIsMobileOpen(false)}
-                  />
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
 
           <motion.main
             key={location.pathname}
             initial="initial"
             animate="animate"
             exit="exit"
-            className={`flex-1 relative transition-all duration-300 ${
-              shouldShowSidebar
+            className={`flex-1 relative transition-all duration-300 ${shouldShowSidebar
                 ? isSidebarCollapsed
                   ? "md:ml-20"
                   : "md:ml-72"
                 : ""
-            } w-full min-h-screen overflow-y-auto`}
+              } w-full min-h-screen overflow-y-auto`}
           >
+            {/* Top header with mobile menu button */}
+            {shouldShowSidebar && (
+              <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-sm border-b border-gray-200 p-4">
+                <div className="flex items-center justify-between max-w-7xl mx-auto">
+                  <div className="flex items-center gap-4">
+                    {/* Mobile menu button */}
+                    <div className="md:hidden">
+                      <MobileMenuButton
+                        isMobileOpen={isMobileOpen}
+                        onMobileToggle={() => setIsMobileOpen(!isMobileOpen)}
+                      />
+                    </div>
+
+                    {/* Page title based on route */}
+                    <div className="space-y-1">
+                      <h1 className="text-2xl font-extrabold bg-linear-to-r from-teal-600 via-emerald-600 to-cyan-600 bg-clip-text text-transparent tracking-wide">
+                        {getPageTitle(location.pathname)}
+                      </h1>
+                      <p className="text-sm text-gray-500 leading-relaxed">
+                        {getPageSubtitle(location.pathname)}
+                      </p>
+
+                      <div className="w-12 h-1 rounded-full bg-linear-to-r from-teal-500 to-cyan-500 mt-2" />
+                    </div>
+
+                  </div>
+
+                  {/* User info/notifications can go here */}
+                  <div className="flex items-center gap-3">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50"
+                    >
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                      <span className="text-sm text-gray-700">Online</span>
+                    </motion.div>
+                  </div>
+                </div>
+              </header>
+            )}
+
             {/* Page header linear */}
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              className={`absolute top-0 left-0 right-0 h-64 bg-linear-to-r ${
-                isAdminPage
+              className={`absolute top-0 left-0 right-0 h-64 bg-linear-to-r ${isAdminPage
                   ? "from-indigo-500/10 to-blue-500/5"
                   : isDriverPage
                     ? "from-teal-500/10 to-blue-500/5"
                     : "from-teal-500/10 via-blue-500/5 to-indigo-500/5"
-              } blur-3xl -z-10`}
+                } blur-3xl -z-10`}
             />
 
             {/* Main content container */}
@@ -363,6 +341,25 @@ const Layout = ({ children }: LayoutProps) => {
           </motion.main>
         </div>
 
+        {/* Floating action buttons for mobile */}
+        {user && !isHomeOrHowItWorks && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="fixed bottom-6 right-6 z-40"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="w-14 h-14 bg-linear-to-br from-teal-500 to-blue-500 text-white rounded-full shadow-xl flex items-center justify-center"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Scroll to top"
+            >
+              <Sparkles className="w-6 h-6" />
+            </motion.button>
+          </motion.div>
+        )}
+
         {/* Progress indicator for page loading */}
         {isLoading && (
           <motion.div
@@ -376,6 +373,35 @@ const Layout = ({ children }: LayoutProps) => {
       <ToastContainer />
     </>
   );
+};
+
+// Helper functions for page titles
+const getPageTitle = (pathname: string): string => {
+  if (pathname === "/dashboard") return "Dashboard";
+  if (pathname.startsWith("/profile")) return "Profile";
+  if (pathname.startsWith("/schedule-pickup")) return "Schedule Pickup";
+  if (pathname.startsWith("/pickups")) return "My Pickups";
+  if (pathname.startsWith("/payment")) return "Payments";
+  if (pathname.startsWith("/notifications")) return "Notifications";
+  if (pathname.startsWith("/settings")) return "Settings";
+  if (pathname.startsWith("/help")) return "Help Center";
+  if (pathname.startsWith("/driver")) return "Driver Dashboard";
+  if (pathname.startsWith("/admin")) return "Admin Dashboard";
+  return "WstApp";
+};
+
+const getPageSubtitle = (pathname: string): string => {
+  if (pathname === "/dashboard") return "Overview of your waste management";
+  if (pathname.startsWith("/profile")) return "Manage your account";
+  if (pathname.startsWith("/schedule-pickup")) return "Schedule a new pickup";
+  if (pathname.startsWith("/pickups")) return "Track your pickups";
+  if (pathname.startsWith("/payment")) return "Payment history & methods";
+  if (pathname.startsWith("/notifications")) return "View all notifications";
+  if (pathname.startsWith("/settings")) return "Customize your preferences";
+  if (pathname.startsWith("/help")) return "Get help & support";
+  if (pathname.startsWith("/driver")) return "Driver management panel";
+  if (pathname.startsWith("/admin")) return "Administration panel";
+  return "Waste Management System";
 };
 
 export default Layout;
