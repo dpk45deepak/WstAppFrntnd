@@ -92,10 +92,13 @@ const DriverPickupsPage: React.FC = () => {
     try {
       if (!user) throw new Error("Not authenticated");
       const response: any = await pickupService.getDriverPickups(user.id);
-      // Simulate additional data
-      const enhancedPickups = (response.data || []).map(
-        (pickup: DriverPickup) => ({
+      const rawList = Array.isArray(response) ? response : (response?.data || []);
+      const enhancedPickups = rawList.map(
+        (pickup: any) => ({
           ...pickup,
+          id: pickup.id || pickup._id,
+          address: pickup.address || (typeof pickup.pickupAddress === 'string' ? pickup.pickupAddress : pickup.pickupAddress?.street) || "Assigned Address",
+          userName: pickup.userName || pickup.userId?.name || "Customer",
           estimatedDuration: Math.floor(Math.random() * 120) + 30,
           actualDuration:
             pickup.status === "completed"
@@ -104,12 +107,12 @@ const DriverPickupsPage: React.FC = () => {
           distance: Math.random() * 20 + 1,
           customerPhone:
             pickup.status === "in_progress" || pickup.status === "scheduled"
-              ? `+1 (555) ${Math.floor(Math.random() * 900 + 100)}-${Math.floor(Math.random() * 9000 + 1000)}`
+              ? (pickup.userId?.phone || `+1 (555) ${Math.floor(Math.random() * 900 + 100)}-${Math.floor(Math.random() * 9000 + 1000)}`)
               : undefined,
         }),
       );
       setPickups(enhancedPickups);
-      setTotalPages(Math.ceil(enhancedPickups.length / itemsPerPage));
+      setTotalPages(Math.ceil(enhancedPickups.length / itemsPerPage) || 1);
     } catch (error: any) {
       showToast(error.message || "Failed to load your pickups", "error");
     } finally {
@@ -124,8 +127,8 @@ const DriverPickupsPage: React.FC = () => {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
-          p.address.toLowerCase().includes(query) ||
-          p.userName.toLowerCase().includes(query),
+          (p.address || "").toLowerCase().includes(query) ||
+          (p.userName || "").toLowerCase().includes(query),
       );
     }
 

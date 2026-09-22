@@ -137,9 +137,9 @@ const PickupsManagementPage: React.FC = () => {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
-          p.address.toLowerCase().includes(query) ||
-          p.userName.toLowerCase().includes(query) ||
-          (p.driverName && p.driverName.toLowerCase().includes(query)),
+          (p.address || "").toLowerCase().includes(query) ||
+          (p.userName || "").toLowerCase().includes(query) ||
+          ((p.driverName || "").toLowerCase().includes(query)),
       );
     }
 

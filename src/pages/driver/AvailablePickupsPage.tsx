@@ -104,17 +104,32 @@ const AvailablePickupsPage: React.FC = () => {
       const response: any = await pickupService.getAllPickups({
         status: "pending",
       });
-      // Simulate additional data
-      const enhancedPickups = (response.data || []).map(
-        (pickup: AvailablePickup) => ({
-          ...pickup,
-          estimatedEarnings: pickup.price + Math.random() * 20,
-          customerRating: 3 + Math.random() * 2,
-          totalPickups: Math.floor(Math.random() * 50),
-        }),
+      const rawList = Array.isArray(response) ? response : (response?.data || []);
+      const enhancedPickups = rawList.map(
+        (pickup: any) => {
+          const price = typeof pickup.price === "number" ? pickup.price : 25;
+          const distance = typeof pickup.distance === "number" ? pickup.distance : (Math.round((Math.random() * 5 + 1) * 10) / 10);
+          const address = pickup.address || (typeof pickup.pickupAddress === "string" ? pickup.pickupAddress : pickup.pickupAddress?.street) || "Local Pickup";
+          const city = pickup.city || pickup.pickupAddress?.city || "Springfield";
+          const userName = pickup.userName || pickup.userId?.name || "Customer";
+          return {
+            ...pickup,
+            id: pickup.id || pickup._id,
+            price,
+            distance,
+            address,
+            city,
+            userName,
+            estimatedEarnings: price + Math.random() * 15,
+            customerRating: 4.6 + Math.random() * 0.4,
+            totalPickups: Math.floor(Math.random() * 40) + 5,
+            priority: pickup.priority || "medium",
+            estimatedDuration: pickup.estimatedDuration || 30,
+          };
+        },
       );
       setPickups(enhancedPickups);
-      setTotalPages(Math.ceil(enhancedPickups.length / itemsPerPage));
+      setTotalPages(Math.ceil(enhancedPickups.length / itemsPerPage) || 1);
     } catch (error: any) {
       showToast(error.message || "Failed to load available pickups", "error");
     } finally {
@@ -125,13 +140,13 @@ const AvailablePickupsPage: React.FC = () => {
   const calculateStats = () => {
     if (pickups.length > 0) {
       const avgEarnings =
-        pickups.reduce((acc, p) => acc + p.price, 0) / pickups.length;
+        pickups.reduce((acc, p) => acc + (p.price || 25), 0) / pickups.length;
       const bestRoute =
-        pickups.slice(0, 3).reduce((acc, p) => acc + p.distance, 0) / 3;
+        pickups.slice(0, 3).reduce((acc, p) => acc + (p.distance || 2), 0) / Math.min(pickups.length, 3);
       setStats({
         totalAvailable: pickups.length,
         avgEarnings,
-        bestRouteEfficiency: 100 - bestRoute * 5,
+        bestRouteEfficiency: Math.max(0, 100 - bestRoute * 5),
       });
     }
   };
@@ -144,9 +159,9 @@ const AvailablePickupsPage: React.FC = () => {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
-          p.address.toLowerCase().includes(query) ||
-          p.city.toLowerCase().includes(query) ||
-          p.userName.toLowerCase().includes(query),
+          (p.address || "").toLowerCase().includes(query) ||
+          (p.city || "").toLowerCase().includes(query) ||
+          (p.userName || "").toLowerCase().includes(query),
       );
     }
 
@@ -156,7 +171,7 @@ const AvailablePickupsPage: React.FC = () => {
     }
 
     // Distance filter
-    filtered = filtered.filter((p) => p.distance <= distanceFilter);
+    filtered = filtered.filter((p) => (p.distance || 0) <= distanceFilter);
 
     // Active tab filters
     if (activeTab === "nearby") {

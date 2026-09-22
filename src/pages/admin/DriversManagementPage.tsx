@@ -120,10 +120,10 @@ const DriversManagementPage: React.FC = () => {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (d) =>
-          d.name.toLowerCase().includes(query) ||
-          d.email.toLowerCase().includes(query) ||
-          d.phone.toLowerCase().includes(query) ||
-          d.vehiclePlate.toLowerCase().includes(query),
+          (d.name || "").toLowerCase().includes(query) ||
+          (d.email || "").toLowerCase().includes(query) ||
+          (d.phone || "").toLowerCase().includes(query) ||
+          (d.vehiclePlate || "").toLowerCase().includes(query),
       );
     }
 
