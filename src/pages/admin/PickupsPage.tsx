@@ -1,5 +1,4 @@
-// src/pages/user/PickupsPage.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Package,
@@ -26,6 +25,8 @@ import { Badge } from "../../components/ui/Badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/Tabs";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { useNavigate } from "react-router";
+import { usePickup } from "../../hooks/usePickup";
+import { useToast } from "../../hooks/useToast";
 
 interface Pickup {
   id: string;
@@ -64,72 +65,67 @@ const NavigateToScheduleButton = () => {
 };
 
 const PickupsPage = () => {
-  const [pickups, _] = useState<Pickup[]>([
-    {
-      id: "P001",
-      date: "Today",
-      time: "2:30 PM",
-      status: "in-progress",
-      type: "Furniture",
-      items: 3,
-      driver: {
-        name: "Michael Chen",
-        rating: 4.9,
-        phone: "+1 (555) 123-4567",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
-      },
-      location: {
-        from: "123 Main St, Apt 4B",
-        to: "456 Warehouse Ave",
-      },
-      price: 89.99,
-      estimatedTime: "30-45 min",
-    },
-    {
-      id: "P002",
-      date: "Tomorrow",
-      time: "10:00 AM",
-      status: "scheduled",
-      type: "Electronics",
-      items: 5,
-      driver: {
-        name: "Sarah Johnson",
-        rating: 4.8,
-        phone: "+1 (555) 987-6543",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-      },
-      location: {
-        from: "789 Oak St",
-        to: "101 Tech Park",
-      },
-      price: 149.5,
-      estimatedTime: "45-60 min",
-    },
-    {
-      id: "P003",
-      date: "Oct 15",
-      time: "3:45 PM",
-      status: "completed",
-      type: "Clothing",
-      items: 12,
-      driver: {
-        name: "David Wilson",
-        rating: 4.7,
-        phone: "+1 (555) 456-7890",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
-      },
-      location: {
-        from: "321 Pine St",
-        to: "654 Donation Center",
-      },
-      price: 45.0,
-      estimatedTime: "Completed",
-    },
-  ]);
-
+  const navigate = useNavigate();
+  const { getPickups, cancelPickup } = usePickup();
+  const { showToast } = useToast();
+  const [pickups, setPickups] = useState<Pickup[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
-  const [loading, _loading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPickups();
+  }, []);
+
+  const fetchPickups = async () => {
+    setLoading(true);
+    try {
+      const data = await getPickups();
+      if (data && data.length > 0) {
+        const mapped: Pickup[] = data.map((p: any) => {
+          const dateObj = new Date(p.pickupDate);
+          return {
+            id: p.id || p._id || "P001",
+            date: !isNaN(dateObj.getTime()) ? dateObj.toLocaleDateString() : "Scheduled",
+            time: !isNaN(dateObj.getTime()) ? dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Flexible",
+            status: p.status === "in_progress" ? "in-progress" : (p.status || "scheduled"),
+            type: (p.wasteType ? p.wasteType.charAt(0).toUpperCase() + p.wasteType.slice(1) : "General") + " Waste",
+            items: Number(p.quantity) || 1,
+            driver: {
+              name: p.driverId?.name || p.driverName || "Driver Assigned",
+              rating: p.driverId?.rating || 4.9,
+              phone: p.driverId?.phone || "+1 (555) 123-4567",
+              avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(p.driverId?.name || "Driver")}`,
+            },
+            location: {
+              from: p.address || (typeof p.pickupAddress === "string" ? p.pickupAddress : p.pickupAddress?.street) || "Pickup Address",
+              to: "Eco Disposal & Recycling Center",
+            },
+            price: Number(p.price) || 20.0,
+            estimatedTime: p.status === "completed" ? "Completed" : "30-45 min",
+            notes: p.notes || p.specialInstructions,
+          };
+        });
+        setPickups(mapped);
+      } else {
+        setPickups([]);
+      }
+    } catch (err: any) {
+      showToast(err.message || "Failed to load pickups", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelPickup = async (id: string) => {
+    try {
+      await cancelPickup(id, "Cancelled by user");
+      showToast("Pickup cancelled successfully", "success");
+      fetchPickups();
+    } catch (err: any) {
+      showToast(err.message || "Failed to cancel pickup", "error");
+    }
+  };
 
   const statusColors: Record<string, string> = {
     scheduled: "bg-blue-100 text-blue-700 border-blue-200",
@@ -186,7 +182,10 @@ const PickupsPage = () => {
                 Track and manage all your scheduled pickups
               </p>
             </div>
-            <Button className="bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700">
+            <Button 
+              onClick={() => navigate("/schedule-pickup")}
+              className="bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 cursor-pointer"
+            >
               <PackageOpen className="w-4 h-4 mr-2" />
               Schedule New Pickup
             </Button>
@@ -546,7 +545,8 @@ const PickupsPage = () => {
                                 {pickup.status === "scheduled" && (
                                   <Button
                                     variant="outline"
-                                    className="border-red-200 text-red-600 hover:bg-red-50"
+                                    onClick={() => handleCancelPickup(pickup.id)}
+                                    className="border-red-200 text-red-600 hover:bg-red-50 cursor-pointer"
                                   >
                                     <XCircle className="w-4 h-4 mr-2" />
                                     Cancel Pickup

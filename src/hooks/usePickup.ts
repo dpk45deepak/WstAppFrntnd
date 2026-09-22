@@ -70,16 +70,17 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      let data: Pickup[];
+      let res: any;
       
       if (user?.role === 'admin') {
-        data = await pickupService.getAllPickups(filters);
+        res = await pickupService.getAllPickups(filters);
       } else if (user?.role === 'driver') {
-        data = await pickupService.getDriverPickups(user.id, filters);
+        res = await pickupService.getDriverPickups(user.id, filters);
       } else {
-        data = await pickupService.getMyPickups(filters);
+        res = await pickupService.getMyPickups(filters);
       }
       
+      const data: Pickup[] = Array.isArray(res) ? res : (res?.data || []);
       setPickups(data);
       return data;
     } catch (err: any) {
@@ -96,7 +97,8 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const data = await pickupService.getPickupById(id);
+      const res: any = await pickupService.getPickupById(id);
+      const data = res?.data || res;
       setCurrentPickup(data);
       return data;
     } catch (err: any) {
@@ -113,7 +115,8 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const newPickup = await pickupService.schedulePickup(data);
+      const res: any = await pickupService.schedulePickup(data);
+      const newPickup = res?.data || res;
       
       // Update local state
       setPickups(prev => [newPickup, ...prev]);
@@ -132,14 +135,15 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const updatedPickup = await pickupService.updatePickup(id, data);
+      const res: any = await pickupService.updatePickup(id, data);
+      const updatedPickup = res?.data || res;
       
       // Update local state
       setPickups(prev => prev.map(pickup => 
-        pickup.id === id ? updatedPickup : pickup
+        (pickup.id === id || (pickup as any)._id === id) ? updatedPickup : pickup
       ));
       
-      if (currentPickup?.id === id) {
+      if (currentPickup?.id === id || (currentPickup as any)?._id === id) {
         setCurrentPickup(updatedPickup);
       }
       
@@ -162,14 +166,15 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const cancelledPickup = await pickupService.cancelPickup(id, reason);
+      const res: any = await pickupService.cancelPickup(id, reason);
+      const cancelledPickup = res?.data || res;
       
       // Update local state
       setPickups(prev => prev.map(pickup => 
-        pickup.id === id ? cancelledPickup : pickup
+        (pickup.id === id || (pickup as any)._id === id) ? cancelledPickup : pickup
       ));
       
-      if (currentPickup?.id === id) {
+      if (currentPickup?.id === id || (currentPickup as any)?._id === id) {
         setCurrentPickup(cancelledPickup);
       }
       
@@ -188,14 +193,15 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const updatedPickup = await pickupService.assignDriver(pickupId, driverId);
+      const res: any = await pickupService.assignDriver(pickupId, driverId);
+      const updatedPickup = res?.data || res;
       
       // Update local state
       setPickups(prev => prev.map(pickup => 
-        pickup.id === pickupId ? updatedPickup : pickup
+        (pickup.id === pickupId || (pickup as any)._id === pickupId) ? updatedPickup : pickup
       ));
       
-      if (currentPickup?.id === pickupId) {
+      if (currentPickup?.id === pickupId || (currentPickup as any)?._id === pickupId) {
         setCurrentPickup(updatedPickup);
       }
       
@@ -214,14 +220,15 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const startedPickup = await pickupService.startPickup(id);
+      const res: any = await pickupService.startPickup(id);
+      const startedPickup = res?.data || res;
       
       // Update local state
       setPickups(prev => prev.map(pickup => 
-        pickup.id === id ? startedPickup : pickup
+        (pickup.id === id || (pickup as any)._id === id) ? startedPickup : pickup
       ));
       
-      if (currentPickup?.id === id) {
+      if (currentPickup?.id === id || (currentPickup as any)?._id === id) {
         setCurrentPickup(startedPickup);
       }
       
@@ -240,14 +247,15 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const completedPickup = await pickupService.completePickup(id);
+      const res: any = await pickupService.completePickup(id);
+      const completedPickup = res?.data || res;
       
       // Update local state
       setPickups(prev => prev.map(pickup => 
-        pickup.id === id ? completedPickup : pickup
+        (pickup.id === id || (pickup as any)._id === id) ? completedPickup : pickup
       ));
       
-      if (currentPickup?.id === id) {
+      if (currentPickup?.id === id || (currentPickup as any)?._id === id) {
         setCurrentPickup(completedPickup);
       }
       
@@ -266,14 +274,15 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const ratedPickup = await pickupService.ratePickup(pickupId, rating, feedback);
+      const res: any = await pickupService.ratePickup(pickupId, rating, feedback);
+      const ratedPickup = res?.data || res;
       
       // Update local state
       setPickups(prev => prev.map(pickup => 
-        pickup.id === pickupId ? ratedPickup : pickup
+        (pickup.id === pickupId || (pickup as any)._id === pickupId) ? ratedPickup : pickup
       ));
       
-      if (currentPickup?.id === pickupId) {
+      if (currentPickup?.id === pickupId || (currentPickup as any)?._id === pickupId) {
         setCurrentPickup(ratedPickup);
       }
       
@@ -292,8 +301,8 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const result = await pickupService.uploadPickupPhoto(pickupId, photo);
-      return result;
+      const result: any = await pickupService.uploadPickupPhoto(pickupId, photo);
+      return result?.data || result;
     } catch (err: any) {
       const errorMessage = err.message || 'Failed to upload photo';
       setError(errorMessage);
@@ -323,14 +332,21 @@ export const usePickup = (): UsePickupReturn => {
     if (!query.trim()) return pickups;
 
     const searchTerm = query.toLowerCase();
-    return pickups.filter(pickup =>
-      pickup.address!.toLowerCase().includes(searchTerm) ||
-      pickup.wasteType.toLowerCase().includes(searchTerm) ||
-      (pickup.notes && pickup.notes.toLowerCase().includes(searchTerm)) ||
-      pickup.id!.toLowerCase().includes(searchTerm) ||
-      (pickup.userName && pickup.userName.toLowerCase().includes(searchTerm)) ||
-      (pickup.driverName && pickup.driverName.toLowerCase().includes(searchTerm))
-    );
+    return pickups.filter(pickup => {
+      const addr = pickup.address || (pickup as any).pickupAddress || '';
+      const notes = pickup.notes || '';
+      const id = pickup.id || (pickup as any)._id || '';
+      const userName = pickup.userName || '';
+      const driverName = pickup.driverName || '';
+      return (
+        addr.toLowerCase().includes(searchTerm) ||
+        (pickup.wasteType && pickup.wasteType.toLowerCase().includes(searchTerm)) ||
+        notes.toLowerCase().includes(searchTerm) ||
+        id.toLowerCase().includes(searchTerm) ||
+        userName.toLowerCase().includes(searchTerm) ||
+        driverName.toLowerCase().includes(searchTerm)
+      );
+    });
   }, [pickups]);
 
   // Statistics
@@ -339,7 +355,8 @@ export const usePickup = (): UsePickupReturn => {
     setError(null);
     
     try {
-      const statsData = await pickupService.getPickupStats(user?.id);
+      const res: any = await pickupService.getPickupStats(user?.id);
+      const statsData = res?.data || res;
       setStats(statsData);
       return statsData;
     } catch (err: any) {

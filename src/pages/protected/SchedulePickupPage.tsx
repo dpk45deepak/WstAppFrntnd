@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Calendar,
   MapPin,
@@ -7,9 +8,15 @@ import {
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
+import { usePickup } from "../../hooks/usePickup";
+import { useToast } from "../../hooks/useToast";
 
 const SchedulePickup = () => {
   const [step, setStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
+  const { schedulePickup } = usePickup();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     address: "",
     wasteType: "general",
@@ -46,13 +53,28 @@ const SchedulePickup = () => {
     { number: 4, title: "Confirm", icon: <CheckCircle className="w-5 h-5" /> },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 4) {
       setStep(step + 1);
     } else {
-      // Handle form submission
-      console.log("Form submitted:", formData);
+      setSubmitting(true);
+      try {
+        await schedulePickup({
+          pickupDate: formData.pickupDate ? new Date(formData.pickupDate).toISOString() : new Date(Date.now() + 86400000).toISOString(),
+          wasteType: (formData.wasteType === "e-waste" ? "general" : formData.wasteType) as any,
+          quantity: 1,
+          pickupAddress: formData.address,
+          specialInstructions: formData.specialInstructions,
+          notes: formData.pickupTime ? `Preferred slot: ${formData.pickupTime}` : undefined,
+        });
+        showToast("Pickup scheduled successfully!", "success");
+        navigate("/pickups");
+      } catch (err: any) {
+        showToast(err.message || "Failed to schedule pickup", "error");
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
@@ -367,11 +389,12 @@ const SchedulePickup = () => {
 
                   <button
                     type="submit"
-                    className="group relative bg-linear-to-r from-teal-500 to-blue-500 text-white px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    disabled={submitting}
+                    className="group relative bg-linear-to-r from-teal-500 to-blue-500 text-white px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 cursor-pointer"
                   >
                     <div className="flex items-center space-x-2">
                       <span>
-                        {step === 4 ? "Confirm & Schedule" : "Continue"}
+                        {submitting ? "Scheduling..." : step === 4 ? "Confirm & Schedule" : "Continue"}
                       </span>
                       {step < 4 && (
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />

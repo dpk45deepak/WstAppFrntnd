@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useToast } from '../../hooks/useToast';
+import api from '../../services/api';
 import Button from '../common/Button';
 import Card from '../common/Card';
 
@@ -45,22 +46,13 @@ const PaymentForm = ({ amount, onSuccess, onCancel }: PaymentFormProps) => {
       }
 
       // Send paymentMethod.id to your server
-      const response = await fetch('/api/payments/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('wstapp_token')}`,
-        },
-        body: JSON.stringify({
-          amount,
-          paymentMethodId: paymentMethod.id,
-        }),
+      const result: any = await api.post('/payments/create', {
+        amount,
+        paymentMethodId: paymentMethod.id,
       });
 
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error || 'Payment failed');
+      if (!result?.success) {
+        throw new Error(result?.error || 'Payment failed');
       }
 
       showToast('Payment successful!', 'success');
